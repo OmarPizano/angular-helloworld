@@ -1,6 +1,7 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { NamesService } from "../names.service";
+import { Name } from '../name';
 
 @Component({
   selector: 'app-names',
@@ -10,7 +11,7 @@ import { NamesService } from "../names.service";
   styleUrl: './names.component.css'
 })
 export class NamesComponent {
-  names: string[] = [];
+  names: Name[] = [];
 
   constructor(private namesService: NamesService) {}
 
@@ -19,6 +20,6 @@ export class NamesComponent {
   }
 
   getNames(): void {
-	  this.names = this.namesService.getNames();
+	  this.namesService.getNames().subscribe(names => this.names = names);
   }
 }
