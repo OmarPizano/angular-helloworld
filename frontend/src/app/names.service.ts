@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from "rxjs";
 import { Name } from './name';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NamesService {
 
-  constructor() { }
+  private namesUrl = 'http://127.0.0.1:5000';  
+
+  constructor(private http: HttpClient) { }
 
   getNames(): Observable<Name[]> {
-	return of(
-	  [{id:1, name:'Name_1'}, {id:2, name:'Name_2'}, {id:3, name:'Name_3'}]);
+    return this.http.get<Name[]>(`${this.namesUrl}/`);
   }
 }
