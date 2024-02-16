@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent {
   name: string = '';
   greeting: string = '';
+  title = 'Helloworld App';
 
   greet() {
     if (this.name.trim() !== '') {

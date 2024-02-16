@@ -1,3 +1,5 @@
+<h1>{{ title }}</h1>
+
 <form (ngSubmit)="greet()">
   <input type="text" [(ngModel)]="name" name="name" placeholder="Type your name" autofocus>
   <br>
@@ -5,5 +7,3 @@
 </form>
 
 <h2>{{ greeting }}</h2>
-
-<router-outlet />
