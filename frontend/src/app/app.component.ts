@@ -1,25 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { GreetingComponent } from './greeting/greeting.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, GreetingComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  name: string = '';
-  greeting: string = '';
   title = 'Helloworld App';
-
-  greet() {
-    if (this.name.trim() !== '') {
-      this.greeting = `¡Hello, ${this.name}!`;
-      // TODO: llamar al backend para guardar nombre
-    } else {
-      this.greeting = '¡Hello, world!';
-    }
-  }
 }

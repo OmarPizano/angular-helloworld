@@ -1,0 +1,7 @@
+<form (ngSubmit)="greet()">
+  <input type="text" [(ngModel)]="name" name="name" placeholder="Type your name" autofocus>
+  <br>
+  <button type="submit">Greet</button>
+</form>
+
+<h2>{{ greeting }}</h2>
