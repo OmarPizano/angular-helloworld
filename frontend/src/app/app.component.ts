@@ -13,4 +13,9 @@ import { NamesComponent } from './names/names.component';
 })
 export class AppComponent {
   title = 'Helloworld App';
+	newName = '';
+	
+	addNewName(name: string) {
+		this.newName = name; 
+	}
 }

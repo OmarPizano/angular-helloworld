@@ -15,4 +15,9 @@ export class NamesService {
   getNames(): Observable<Name[]> {
     return this.http.get<Name[]>(`${this.namesUrl}/`);
   }
+
+  saveName(name: string): Observable<any> {
+	  // TODO: se hace un OPTIONS /save tambien
+	  return this.http.post<any>(`${this.namesUrl}/save`, {name});
+  } 
 }
