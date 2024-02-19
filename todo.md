@@ -5,8 +5,7 @@
 
 # Actual
 
-- backend: agregar mysql a backend
-
 # Completado
 
 - frontend: no se actualiza la lista luego de hacer la misma petición
+- backend: agregar mysql a backend
