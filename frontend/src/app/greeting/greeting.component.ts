@@ -22,5 +22,6 @@ export class GreetingComponent {
     } else {
       this.greeting = '¡Hello, world!';
     }
+		alert(this.greeting);
   }
 }
