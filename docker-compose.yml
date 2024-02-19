@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+
+  database:
+    image: mysql
+    container_name: helloworld_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 'toor'
+    ports:
+      - 127.0.0.1:3306:3306
+    volumes:
+      - db_storage:/var/lib/mysql
+    restart: always
+
+volumes:
+  db_storage:
