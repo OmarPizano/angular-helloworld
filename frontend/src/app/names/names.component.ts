@@ -10,24 +10,6 @@ import { Name } from '../name';
   templateUrl: './names.component.html',
   styleUrl: './names.component.css'
 })
-export class NamesComponent implements OnInit, OnChanges {
-  names: Name[] = [];
-	@Input() newName = '';
-
-  constructor(private namesService: NamesService) {}
-
-  ngOnInit(): void {
-	  this.getNames();
-  }
-
-	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['newName']) {
-			// TODO: asignar bien el ID
-			this.names.push({id: 7, name: this.newName})
-		}
-	}
-
-  getNames(): void {
-	  this.namesService.getNames().subscribe(names => this.names = names);
-  }
+export class NamesComponent {
+  @Input() names: Name[] = [];
 }

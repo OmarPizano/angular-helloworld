@@ -1,9 +1,12 @@
 # Pendiente
 
-- crear componente y plantilla holamundo
-- crear script que inicialize la db con la tabla 
-- crear API que guarde el nombre en la db
+- docker
+- (opt) frontend: agregar navegación con item de app y about
 
 # Actual
 
+- backend: agregar mysql a backend
+
 # Completado
+
+- frontend: no se actualiza la lista luego de hacer la misma petición
