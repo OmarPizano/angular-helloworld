@@ -10,17 +10,17 @@ import { FormsModule } from '@angular/forms';
 export class GreetingComponent {
   name: string = '';
   greeting: string = '';
-	@Output() submittedName = new EventEmitter<string>();
+  @Output() submittedName = new EventEmitter<string>();
 
   greet() {
     if (this.name.trim() !== '') {
       this.greeting = `¡Hello, ${this.name}!`;
-			let name = this.name;
-			this.submittedName.emit(name);
-			this.name = '';
+      let name = this.name;
+      this.submittedName.emit(name);
+      this.name = '';
     } else {
       this.greeting = '¡Hello, world!';
     }
-		alert(this.greeting);
+    alert(this.greeting);
   }
 }

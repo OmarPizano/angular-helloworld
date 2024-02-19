@@ -14,20 +14,20 @@ import { NamesService } from './names.service';
 })
 export class AppComponent implements OnInit {
   title = 'Helloworld App';
-	names: Name[] = []; 
+  names: Name[] = [];
 	
   constructor(private namesService: NamesService) {}
 
   ngOnInit(): void {
-	  this.getNames();
+    this.getNames();
   }
 
   getNames(): void {
-	  this.namesService.getNames().subscribe(names => this.names = names);
+    this.namesService.getNames().subscribe(names => this.names = names);
   }
 
-	addName(name: string) {
-		this.names.push({id: this.names.length+1, name}); 
-		this.namesService.createName(name).subscribe();
-	}
+  addName(name: string) {
+    this.names.push({id: this.names.length+1, name});
+    this.namesService.createName(name).subscribe();
+  }
 }

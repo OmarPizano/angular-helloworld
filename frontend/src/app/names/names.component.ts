@@ -1,6 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { NamesService } from "../names.service";
+import { Component, Input } from '@angular/core';
 import { Name } from '../name';
 
 @Component({
