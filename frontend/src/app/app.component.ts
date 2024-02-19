@@ -11,7 +11,6 @@ import { NamesService } from './names.service';
   standalone: true,
   imports: [RouterOutlet, FormsModule, GreetingComponent, NamesComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'Helloworld App';

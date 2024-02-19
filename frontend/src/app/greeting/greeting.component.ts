@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './greeting.component.html',
-  styleUrl: './greeting.component.css'
 })
 export class GreetingComponent {
   name: string = '';

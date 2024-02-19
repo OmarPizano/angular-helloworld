@@ -8,7 +8,6 @@ import { Name } from '../name';
   standalone: true,
   imports: [NgFor, NgIf],
   templateUrl: './names.component.html',
-  styleUrl: './names.component.css'
 })
 export class NamesComponent {
   @Input() names: Name[] = [];
