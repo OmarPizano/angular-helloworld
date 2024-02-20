@@ -12,5 +12,17 @@ services:
       - db_storage:/var/lib/mysql
     restart: always
 
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: helloworld_frontend
+    ports:
+      - 127.0.0.1:4200:4200
+    volumes:
+      - ./frontend/:/home/node
+    command: >
+      /bin/sh -c "npm install && ng serve --host 0.0.0.0; exit 0"
+
 volumes:
   db_storage:
