@@ -1,8 +1,20 @@
 @if(names.length > 0) {
 <h2>Name List</h2>
-<ul>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>NAME</th>
+    <th>OPS</th>
+  </tr>
   @for (name of names; track name.id) {
-  <li>{{name.id}}, {{name.name}}</li>
+  <tr>
+    <td>{{name.id}}</td>
+    <td>{{name.name}}</td>
+    <td>
+      <button>edit</button>
+      <button>delete</button>
+    </td>
+  </tr>
   }
-</ul>
+</table>
 }
