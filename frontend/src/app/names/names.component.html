@@ -1,6 +1,8 @@
-<div *ngIf="names.length > 0">
-  <h2>Name List</h2>
-  <ul>
-    <li *ngFor="let name of names">{{name.id}}, {{name.name}}</li>
-  </ul>
-</div>
+@if(names.length > 0) {
+<h2>Name List</h2>
+<ul>
+  @for (name of names; track name.id) {
+  <li>{{name.id}}, {{name.name}}</li>
+  }
+</ul>
+}
