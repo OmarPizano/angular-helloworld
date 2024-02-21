@@ -6,8 +6,9 @@ services:
     container_name: helloworld_db
     environment:
       MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      MYSQL_DATABASE: helloworld
     ports:
-      - $DB_HOST:3306:3306
+      - 127.0.0.1:3306:3306
     volumes:
       - db_storage:/var/lib/mysql
     restart: always
