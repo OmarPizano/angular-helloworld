@@ -25,5 +25,22 @@ services:
     command: >
       /bin/sh -c "npm install && ng serve --host 0.0.0.0; exit 0"
 
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: helloworld_backend
+    depends_on:
+      - database
+    environment:
+      DB_URL: $DB_URL
+    ports:
+      - 127.0.0.1:5000:5000
+    volumes:
+      - ./backend/:/home/python
+    command: >
+      /bin/sh -c "pip install --no-cache-dir -r requirements.txt && python -m flask run --host=0.0.0.0"
+    restart: always   # reiniciar porque mysql no esta listo al construir, funciona bin cuando las imagenes ya están creadas
+
 volumes:
   db_storage:
