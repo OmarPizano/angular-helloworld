@@ -38,7 +38,7 @@ def save_name():
     new_name = Names(name=data['name'])
     db.session.add(new_name)
     db.session.commit()
-    return jsonify({'message': 'name {} saved successfully'.format(new_name.name)})
+    return jsonify({"id": new_name.id, "name": new_name.name})
 
 if __name__ == '__main__':
     app.run(debug=True)

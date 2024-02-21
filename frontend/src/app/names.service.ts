@@ -16,7 +16,7 @@ export class NamesService {
     return this.http.get<Name[]>(`${this.namesUrl}/`);
   }
 	
-  createName(name: string): Observable<any> {
-    return this.http.post<any>(`${this.namesUrl}/save`, {name});
+  createName(name: string): Observable<Name> {
+    return this.http.post<Name>(`${this.namesUrl}/save`, {name});
   }
 }

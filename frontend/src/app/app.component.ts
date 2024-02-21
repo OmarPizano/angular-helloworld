@@ -27,7 +27,8 @@ export class AppComponent implements OnInit {
   }
 
   addName(name: string) {
-    this.names.push({id: this.names.length+1, name});
-    this.namesService.createName(name).subscribe();
+    this.namesService.createName(name).subscribe(
+      (newName) => this.names.push(newName)
+    );
   }
 }
