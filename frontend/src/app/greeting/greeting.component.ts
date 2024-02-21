@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './greeting.component.html',
 })
 export class GreetingComponent {
+  title = 'Greet Yourself!'
   name: string = '';
   greeting: string = '';
   @Output() submittedName = new EventEmitter<string>();

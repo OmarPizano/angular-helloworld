@@ -10,4 +10,5 @@ import { Name } from '../name';
 })
 export class NamesComponent {
   @Input() names: Name[] = [];
+  title = 'Name List'
 }
