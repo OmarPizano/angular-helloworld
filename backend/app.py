@@ -32,7 +32,7 @@ def get_names():
     results = [{'id': name.id, 'name': name.name} for name in names]
     return jsonify(results)
 
-@app.route('/save', methods=['POST'])
+@app.route('/create', methods=['POST'])
 def save_name():
     data = request.json
     new_name = Names(name=data['name'])
