@@ -40,5 +40,12 @@ def save_name():
     db.session.commit()
     return jsonify({"id": new_name.id, "name": new_name.name})
 
+@app.route('/delete/<int:id>', methods=['DELETE'])
+def delete_name(id):
+    name = Names.query.get(id)
+    db.session.delete(name)
+    db.session.commit()
+    return jsonify({"id": name.id, "name": name.name})
+
 if __name__ == '__main__':
     app.run(debug=True)

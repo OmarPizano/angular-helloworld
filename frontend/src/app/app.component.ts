@@ -31,4 +31,15 @@ export class AppComponent implements OnInit {
       (newName) => this.names.push(newName)
     );
   }
+
+  deleteName(id: number) {
+    this.namesService.deleteName(id).subscribe(
+      (deletedName) => {
+        const index = this.names.findIndex(item => item.id === deletedName.id);
+        if (index !== -1) {
+          this.names.splice(index, 1);
+        }
+      }
+    )
+  }
 }

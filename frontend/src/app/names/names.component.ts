@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Name } from '../name';
 
 @Component({
@@ -10,5 +10,10 @@ import { Name } from '../name';
 })
 export class NamesComponent {
   @Input() names: Name[] = [];
+  @Output() deletedName = new EventEmitter<number>();
   title = 'Name List'
+
+  delete(id: number) {
+    this.deletedName.emit(id);
+  }
 }
