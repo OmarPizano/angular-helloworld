@@ -1,0 +1,7 @@
+<h3>Update Name: {{name}}</h3>
+<form (ngSubmit)="updateName()">
+  <input type="text" [(ngModel)]="newName" name="newName" placeholder="Type the new name">
+  <br>
+  <button type="submit">Update</button>
+  <button (click)="cancelUpdate()">Cancel</button>
+</form>

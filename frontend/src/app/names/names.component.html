@@ -11,7 +11,7 @@
     <td>{{name.id}}</td>
     <td>{{name.name}}</td>
     <td>
-      <button>edit</button>
+      <button (click)="showUpdateForm(name)">update</button>
       <button (click)="delete(name.id)">delete</button>
     </td>
   </tr>
@@ -19,4 +19,7 @@
 </table>
 } @else {
 <p>Sorry :/, we don't have any names yet.</p>
+}
+@if(updating) {
+<app-update-name [name]="updatingName" (updateButton)="update($event)" (cancelButton)="cancelUpdate()" />
 }

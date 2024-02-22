@@ -23,4 +23,8 @@ export class NamesService {
   deleteName(id: number): Observable<Name> {
     return this.http.delete<Name>(`${this.namesUrl}/delete/${id}`);
   }
+
+  updateName(id: number, newName: string): Observable<Name> {
+    return this.http.put<Name>(`${this.namesUrl}/update/${id}`, {newName});
+  }
 }

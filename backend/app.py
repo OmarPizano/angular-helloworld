@@ -47,5 +47,12 @@ def delete_name(id):
     db.session.commit()
     return jsonify({"id": name.id, "name": name.name})
 
+@app.route('/update/<int:id>', methods=['PUT'])
+def update_name(id):
+    name = Names.query.get(id)
+    name.name = request.json['newName']
+    db.session.commit()
+    return jsonify({"id": name.id, "name": name.name})
+
 if __name__ == '__main__':
     app.run(debug=True)

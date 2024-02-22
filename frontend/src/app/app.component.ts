@@ -42,4 +42,15 @@ export class AppComponent implements OnInit {
       }
     )
   }
+
+  updateName(name: Name) {
+    this.namesService.updateName(name.id, name.name).subscribe(
+      (updatedName) => {
+        const index = this.names.findIndex(item => item.id === updatedName.id);
+        if (index !== -1) {
+          this.names[index].name = updatedName.name;
+        }
+      }
+    )
+  }
 }
