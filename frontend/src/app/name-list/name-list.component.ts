@@ -39,6 +39,7 @@ export class NameListComponent {
 
   showUpdateForm(name: Name) {
     this.updating = true;
+    this.creating = false;
     this.updatingID = name.id;
     this.updatingName = name.name;
   }
@@ -51,6 +52,7 @@ export class NameListComponent {
 
   showCreateForm() {
     this.creating = true;
+    this.updating = false;
   }
 
   cancelCreate() {
