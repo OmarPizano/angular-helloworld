@@ -2,12 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-greeting',
+  selector: 'app-create-name',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './greeting.component.html',
+  templateUrl: './create-name.component.html',
 })
-export class GreetingComponent {
+export class CreateNameComponent {
   title = 'Create Name'
   name: string = '';
   @Output() createButton = new EventEmitter<string>();

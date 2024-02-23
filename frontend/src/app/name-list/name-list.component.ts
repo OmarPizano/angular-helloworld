@@ -1,16 +1,16 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Name } from '../name';
+import { CreateNameComponent } from '../create-name/create-name.component';
 import { UpdateNameComponent } from '../update-name/update-name.component';
-import { GreetingComponent } from '../greeting/greeting.component';
+import { Name } from '../models/name';
 
 @Component({
-  selector: 'app-names',
+  selector: 'app-name-list',
   standalone: true,
-  imports: [NgFor, NgIf, UpdateNameComponent, GreetingComponent],
-  templateUrl: './names.component.html',
+  imports: [NgFor, NgIf, UpdateNameComponent, CreateNameComponent],
+  templateUrl: './name-list.component.html',
 })
-export class NamesComponent {
+export class NameListComponent {
   @Input() names: Name[] = [];
   @Output() deletedName = new EventEmitter<number>();
   @Output() updatedName = new EventEmitter<Name>();

@@ -25,5 +25,5 @@
 <app-update-name [name]="updatingName" (updateButton)="update($event)" (cancelButton)="cancelUpdate()" />
 }
 @if(creating) {
-<app-greeting (createButton)="create($event)" (cancelButton)="cancelCreate()" />
+<app-create-name (createButton)="create($event)" (cancelButton)="cancelCreate()" />
 }
