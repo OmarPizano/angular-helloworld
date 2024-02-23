@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { NamesService } from './services/names.service';
 import { Name } from './models/name';
 import { NameListComponent } from './name-list/name-list.component';
@@ -8,7 +6,7 @@ import { NameListComponent } from './name-list/name-list.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, NameListComponent],
+  imports: [NameListComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
