@@ -1,4 +1,5 @@
 <h2>{{ title }}</h2>
+<button (click)="showCreateForm()">Create</button>
 @if(names.length > 0) {
 <table>
   <tr>
@@ -22,4 +23,7 @@
 }
 @if(updating) {
 <app-update-name [name]="updatingName" (updateButton)="update($event)" (cancelButton)="cancelUpdate()" />
+}
+@if(creating) {
+<app-greeting (createButton)="create($event)" (cancelButton)="cancelCreate()" />
 }

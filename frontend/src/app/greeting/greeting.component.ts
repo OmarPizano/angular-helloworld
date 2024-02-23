@@ -8,20 +8,16 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './greeting.component.html',
 })
 export class GreetingComponent {
-  title = 'Greet Yourself!'
+  title = 'Create Name'
   name: string = '';
-  greeting: string = '';
-  @Output() submittedName = new EventEmitter<string>();
+  @Output() createButton = new EventEmitter<string>();
+  @Output() cancelButton = new EventEmitter();
 
-  greet() {
-    if (this.name.trim() !== '') {
-      this.greeting = `¡Hello, ${this.name}!`;
-      let name = this.name;
-      this.submittedName.emit(name);
-      this.name = '';
-    } else {
-      this.greeting = '¡Hello, world!';
-    }
-    alert(this.greeting);
+  createName() {
+    this.createButton.emit(this.name);
+  }
+
+  cancelCreate() {
+    this.cancelButton.emit();
   }
 }
