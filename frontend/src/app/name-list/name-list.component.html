@@ -13,7 +13,7 @@
     <td>{{name.name}}</td>
     <td>
       <button (click)="showUpdateForm(name)">update</button>
-      <button (click)="delete(name.id)">delete</button>
+      <button (click)="deleteName(name.id)">delete</button>
     </td>
   </tr>
   }
@@ -22,8 +22,8 @@
 <p>Sorry :/, we don't have any names yet.</p>
 }
 @if(updating) {
-<app-update-name [name]="updatingName" (updateButton)="update($event)" (cancelButton)="cancelUpdate()" />
+<app-update-name [name]="updatingName" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
 }
 @if(creating) {
-<app-create-name (createButton)="create($event)" (cancelButton)="cancelCreate()" />
+<app-create-name (createButton)="createName($event)" (cancelButton)="cancelCreate()" />
 }

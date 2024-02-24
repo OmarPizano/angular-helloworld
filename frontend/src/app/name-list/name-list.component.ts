@@ -1,8 +1,9 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CreateNameComponent } from '../create-name/create-name.component';
 import { UpdateNameComponent } from '../update-name/update-name.component';
 import { Name } from '../models/name';
+import { NamesService } from '../services/names.service';
 
 @Component({
   selector: 'app-name-list',
@@ -10,30 +11,52 @@ import { Name } from '../models/name';
   imports: [NgFor, NgIf, UpdateNameComponent, CreateNameComponent],
   templateUrl: './name-list.component.html',
 })
-export class NameListComponent {
-  @Input() names: Name[] = [];
-  @Output() deletedName = new EventEmitter<number>();
-  @Output() updatedName = new EventEmitter<Name>();
-  @Output() createdName = new EventEmitter<string>();
+export class NameListComponent implements OnInit {
+  names: Name[] = [];
 
   title = 'Name List'
+  creating = false;
   updating = false;
   updatingID = 0;
   updatingName = '';
-  creating = false;
+  
+  constructor(private namesService: NamesService) {}
+  
+  ngOnInit(): void {
+    this.getNames();
+  }
 
-  create(name: string) {
-    this.createdName.emit(name);
+  getNames(): void {
+    this.namesService.getNames().subscribe(names => this.names = names);
+  }
+
+  createName(name: string) {
+    this.namesService.createName(name).subscribe(
+      (newName) => this.names.push(newName)
+    );
     this.creating = false;
   }
 
-  delete(id: number) {
-    this.deletedName.emit(id);
+  deleteName(id: number) {
+    this.namesService.deleteName(id).subscribe(
+      (deletedName) => {
+        const index = this.names.findIndex(item => item.id === deletedName.id);
+        if (index !== -1) {
+          this.names.splice(index, 1);
+        }
+      }
+    );
   }
 
-  update(name: string) {
-    let newName: Name = {id: this.updatingID, name: name};
-    this.updatedName.emit(newName);
+  updateName(name: string) {
+    this.namesService.updateName(this.updatingID, name).subscribe(
+      (updatedName) => {
+        const index = this.names.findIndex(item => item.id === updatedName.id);
+        if (index !== -1) {
+          this.names[index].name = updatedName.name;
+        }
+      }
+    )
     this.updating = false;
   }
 
