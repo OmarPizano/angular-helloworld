@@ -12,18 +12,18 @@ export class NamesService {
   constructor(private http: HttpClient) { }
 
   getNames(): Observable<Name[]> {
-    return this.http.get<Name[]>(`${this.url}`);
+    return this.http.get<Name[]>(`${this.url}/names`);
   }
 
   createName(name: string): Observable<Name> {
-    return this.http.post<Name>(`${this.url}/create`, { name });
+    return this.http.post<Name>(`${this.url}/names`, { name });
   }
 
   deleteName(id: number): Observable<Name> {
-    return this.http.delete<Name>(`${this.url}/delete/${id}`);
+    return this.http.delete<Name>(`${this.url}/names/${id}`);
   }
 
   updateName(id: number, newName: string): Observable<Name> {
-    return this.http.put<Name>(`${this.url}/update/${id}`, { newName });
+    return this.http.put<Name>(`${this.url}/names/${id}`, { newName });
   }
 }

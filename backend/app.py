@@ -26,28 +26,28 @@ with app.app_context():
     db.create_all()
 
 # rutas
-@app.route('/', methods=['GET'])
+@app.route('/names', methods=['GET'])
 def get_names():
     names = Names.query.all()
     results = [{'id': name.id, 'name': name.name} for name in names]
     return jsonify(results)
 
-@app.route('/create', methods=['POST'])
-def save_name():
+@app.route('/names', methods=['POST'])
+def create_name():
     data = request.json
     new_name = Names(name=data['name'])
     db.session.add(new_name)
     db.session.commit()
     return jsonify({"id": new_name.id, "name": new_name.name})
 
-@app.route('/delete/<int:id>', methods=['DELETE'])
+@app.route('/names/<int:id>', methods=['DELETE'])
 def delete_name(id):
     name = Names.query.get(id)
     db.session.delete(name)
     db.session.commit()
     return jsonify({"id": name.id, "name": name.name})
 
-@app.route('/update/<int:id>', methods=['PUT'])
+@app.route('/names/<int:id>', methods=['PUT'])
 def update_name(id):
     name = Names.query.get(id)
     name.name = request.json['newName']
