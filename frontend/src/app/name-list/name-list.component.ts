@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { CreateNameComponent } from '../create-name/create-name.component';
 import { UpdateNameComponent } from '../update-name/update-name.component';
 import { Name } from '../models/name';
@@ -12,73 +12,69 @@ import { NamesService } from '../services/names.service';
   templateUrl: './name-list.component.html',
 })
 export class NameListComponent implements OnInit {
-  names: Name[] = [];
-
-  title = 'Name List'
-  creating = false;
-  updating = false;
-  updatingID = 0;
-  updatingName = '';
+  title: string = 'Name List';
+  nameList: Name[] = [];
+  createNameFormEnabled: boolean = false;
+  updateNameFormEnabled: boolean = false;
+  updatingName: Name = {id: 0, name: ''};
 
   constructor(private namesService: NamesService) { }
 
   ngOnInit(): void {
-    this.getNames();
+    this.getNameList();
   }
 
-  getNames(): void {
-    this.namesService.getNames().subscribe(names => this.names = names);
+  getNameList(): void {
+    this.namesService.getNames().subscribe(names => this.nameList = names);
   }
 
-  createName(name: string) {
+  createName(name: string): void {
     this.namesService.createName(name).subscribe(
-      (newName) => this.names.push(newName)
+      (createdName) => this.nameList.push(createdName)
     );
-    this.creating = false;
+    this.createNameFormEnabled = false;
   }
 
-  deleteName(id: number) {
+  deleteName(id: number): void {
     this.namesService.deleteName(id).subscribe(
       (deletedName) => {
-        const index = this.names.findIndex(item => item.id === deletedName.id);
+        const index = this.nameList.findIndex(item => item.id === id);
         if (index !== -1) {
-          this.names.splice(index, 1);
+          this.nameList.splice(index, 1);
         }
       }
     );
   }
 
-  updateName(name: string) {
-    this.namesService.updateName(this.updatingID, name).subscribe(
+  updateName(name: string): void {
+    this.namesService.updateName(this.updatingName.id, name).subscribe(
       (updatedName) => {
-        const index = this.names.findIndex(item => item.id === updatedName.id);
+        const index = this.nameList.findIndex(item => item.id === this.updatingName.id);
         if (index !== -1) {
-          this.names[index].name = updatedName.name;
+          this.nameList[index].name = name;
         }
       }
     )
-    this.updating = false;
+    this.updateNameFormEnabled = false;
   }
 
-  showUpdateForm(name: Name) {
-    this.updating = true;
-    this.creating = false;
-    this.updatingID = name.id;
-    this.updatingName = name.name;
+  showUpdateForm(name: Name): void {
+    this.updateNameFormEnabled = true;
+    this.createNameFormEnabled = false;
+    this.updatingName = name;
   }
 
-  cancelUpdate() {
-    this.updating = false;
-    this.updatingID = 0;
-    this.updatingName = '';
+  cancelUpdate(): void {
+    this.updateNameFormEnabled = false;
+    this.updatingName = {id: 0, name: ''};
   }
 
-  showCreateForm() {
-    this.creating = true;
-    this.updating = false;
+  showCreateForm(): void {
+    this.createNameFormEnabled = true;
+    this.updateNameFormEnabled = false;
   }
 
-  cancelCreate() {
-    this.creating = false;
+  cancelCreate(): void {
+    this.createNameFormEnabled = false;
   }
 }

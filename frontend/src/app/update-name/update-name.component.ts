@@ -8,21 +8,21 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './update-name.component.html',
 })
 export class UpdateNameComponent implements OnInit {
-  newName: string = '';
+  @Input() name: string = '';
   @Output() updateButton = new EventEmitter<string>();
   @Output() cancelButton = new EventEmitter();
-  @Input() name: string = '';
-  title = '';
+  title: string = '';
+  newName: string = '';
 
   ngOnInit(): void {
     this.title = `Update Name: ${this.name}`;
   }
 
-  updateName() {
+  updateName(): void {
     this.updateButton.emit(this.newName);
   }
 
-  cancelUpdate() {
+  cancelUpdate(): void {
     this.cancelButton.emit();
   }
 }

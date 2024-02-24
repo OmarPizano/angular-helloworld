@@ -1,13 +1,13 @@
 <h2>{{ title }}</h2>
 <button (click)="showCreateForm()">Create</button>
-@if(names.length > 0) {
+@if(nameList.length > 0) {
 <table>
   <tr>
     <th>ID</th>
     <th>NAME</th>
     <th>OPS</th>
   </tr>
-  @for (name of names; track name.id) {
+  @for (name of nameList; track name.id) {
   <tr>
     <td>{{name.id}}</td>
     <td>{{name.name}}</td>
@@ -21,9 +21,9 @@
 } @else {
 <p>Sorry :/, we don't have any names yet.</p>
 }
-@if(updating) {
-<app-update-name [name]="updatingName" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
+@if(updateNameFormEnabled) {
+<app-update-name [name]="updatingName.name" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
 }
-@if(creating) {
+@if(createNameFormEnabled) {
 <app-create-name (createButton)="createName($event)" (cancelButton)="cancelCreate()" />
 }

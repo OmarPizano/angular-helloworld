@@ -8,16 +8,16 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './create-name.component.html',
 })
 export class CreateNameComponent {
-  title = 'Create Name'
-  name: string = '';
   @Output() createButton = new EventEmitter<string>();
   @Output() cancelButton = new EventEmitter();
+  title: string = 'Create Name'
+  name: string = '';
 
-  createName() {
+  createName(): void {
     this.createButton.emit(this.name);
   }
 
-  cancelCreate() {
+  cancelCreate(): void {
     this.cancelButton.emit();
   }
 }
