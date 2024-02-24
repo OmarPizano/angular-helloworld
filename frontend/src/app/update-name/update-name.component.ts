@@ -15,7 +15,7 @@ export class UpdateNameComponent implements OnInit {
   title = '';
 
   ngOnInit(): void {
-      this.title = `Update Name: ${this.name}`;
+    this.title = `Update Name: ${this.name}`;
   }
 
   updateName() {

@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { NameListComponent } from './name-list/name-list.component';
 
 @Component({
@@ -8,5 +8,5 @@ import { NameListComponent } from './name-list/name-list.component';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'Helloworld App';	
+  title = 'Helloworld App';
 }

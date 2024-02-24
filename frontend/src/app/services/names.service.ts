@@ -8,16 +8,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class NamesService {
 
-  private namesUrl = 'http://127.0.0.1:5000';  
+  private namesUrl = 'http://127.0.0.1:5000';
 
   constructor(private http: HttpClient) { }
 
   getNames(): Observable<Name[]> {
     return this.http.get<Name[]>(`${this.namesUrl}/`);
   }
-	
+
   createName(name: string): Observable<Name> {
-    return this.http.post<Name>(`${this.namesUrl}/create`, {name});
+    return this.http.post<Name>(`${this.namesUrl}/create`, { name });
   }
 
   deleteName(id: number): Observable<Name> {
@@ -25,6 +25,6 @@ export class NamesService {
   }
 
   updateName(id: number, newName: string): Observable<Name> {
-    return this.http.put<Name>(`${this.namesUrl}/update/${id}`, {newName});
+    return this.http.put<Name>(`${this.namesUrl}/update/${id}`, { newName });
   }
 }

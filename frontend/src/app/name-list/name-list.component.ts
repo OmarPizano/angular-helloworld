@@ -19,9 +19,9 @@ export class NameListComponent implements OnInit {
   updating = false;
   updatingID = 0;
   updatingName = '';
-  
-  constructor(private namesService: NamesService) {}
-  
+
+  constructor(private namesService: NamesService) { }
+
   ngOnInit(): void {
     this.getNames();
   }
