@@ -53,7 +53,7 @@ class Names(Resource):
     def delete(self, id: int = 0):
         if id == 0:
             abort(400)
-        name_to_delete = Name.query.get(id)
+        name_to_delete = db.session.get(Name, id)
         if not name_to_delete:
             abort(404)
         db.session.delete(name_to_delete)
@@ -65,7 +65,7 @@ class Names(Resource):
             abort(400)
         self.parser.add_argument('newName', type=str, required=True)
         args = self.parser.parse_args()
-        name_to_update = Name.query.get(id)
+        name_to_update = db.session.get(Name, id)
         if not name_to_update:
             abort(404)
         name_to_update.name = args['newName']
