@@ -1,4 +1,4 @@
-from flask import Flask, abort, request
+from flask import Flask, abort
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, reqparse
