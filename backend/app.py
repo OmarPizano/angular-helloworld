@@ -1,7 +1,6 @@
-from flask import Flask, abort
+from flask import Flask, abort, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Api, Resource, reqparse
 from dotenv import load_dotenv
 from os import getenv
 
@@ -13,7 +12,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
 
 db = SQLAlchemy(app)
-api = Api(app)
 
 # modelo
 class Name(db.Model):
@@ -32,48 +30,43 @@ class Name(db.Model):
 with app.app_context():
     db.create_all()
 
-# recurso
-class Names(Resource):
-    def __init__(self) -> None:
-        self.parser = reqparse.RequestParser() 
+# rutas
+@app.route('/names', methods = ['GET'])
+def names_get_all():
+    names = Name.query.all()
+    results = [name.to_dict() for name in names]
+    return results, 200
 
-    def get(self):
-        names = Name.query.all()
-        results = [name.to_dict() for name in names]
-        return results, 200
+@app.route('/names', methods = ['POST'])
+def names_create():
+    data = request.get_json()
+    if 'name' not in data:
+        abort(400)
+    new_name = Name(name = data['name'])
+    db.session.add(new_name)
+    db.session.commit()
+    return new_name.to_dict(), 201
+    
+@app.route('/names/<int:id>', methods = ['DELETE'])
+def names_delete(id):
+    name_to_delete = db.session.get(Name, id)
+    if not name_to_delete:
+        abort(404)
+    db.session.delete(name_to_delete)
+    db.session.commit()
+    return {}, 204
 
-    def post(self):
-        self.parser.add_argument('name', type=str, required=True)
-        args = self.parser.parse_args()
-        new_name = Name(name=args['name'])
-        db.session.add(new_name)
-        db.session.commit()
-        return new_name.to_dict(), 201
-
-    def delete(self, id: int = 0):
-        if id == 0:
-            abort(400)
-        name_to_delete = db.session.get(Name, id)
-        if not name_to_delete:
-            abort(404)
-        db.session.delete(name_to_delete)
-        db.session.commit()
-        return {}, 204
-
-    def put(self, id: int = 0):
-        if id == 0:
-            abort(400)
-        self.parser.add_argument('newName', type=str, required=True)
-        args = self.parser.parse_args()
-        name_to_update = db.session.get(Name, id)
-        if not name_to_update:
-            abort(404)
-        name_to_update.name = args['newName']
-        db.session.commit()
-        return {}, 204
-
-# rutas permitidas
-api.add_resource(Names, '/names', '/names/<int:id>')
+@app.route('/names/<int:id>', methods = ['PUT'])
+def names_update(id):
+    data = request.get_json()
+    if 'newName' not in data:
+        abort(400)
+    name_to_update = db.session.get(Name, id)
+    if not name_to_update:
+        abort(404)
+    name_to_update.name = data['newName'] 
+    db.session.commit()
+    return {}, 204
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
