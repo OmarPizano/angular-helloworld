@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AutofocusDirective } from '../auto-focus.directive';
 
 @Component({
   selector: 'app-create-name',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, AutofocusDirective],
   templateUrl: './create-name.component.html',
 })
 export class CreateNameComponent {

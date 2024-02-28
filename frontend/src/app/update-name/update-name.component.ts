@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AutofocusDirective } from '../auto-focus.directive';
 
 @Component({
   selector: 'app-update-name',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, AutofocusDirective],
   templateUrl: './update-name.component.html',
 })
 export class UpdateNameComponent implements OnInit {
