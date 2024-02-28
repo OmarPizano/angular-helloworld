@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from "rxjs";
 import { Name } from '../models/name';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class NamesService {
-  private url = 'http://127.0.0.1:5000';
+  private url = environment.apiURL;
 
   constructor(private http: HttpClient) { }
 
