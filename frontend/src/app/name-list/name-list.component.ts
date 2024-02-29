@@ -4,11 +4,12 @@ import { CreateNameComponent } from '../create-name/create-name.component';
 import { UpdateNameComponent } from '../update-name/update-name.component';
 import { Name } from '../models/name';
 import { NamesService } from '../services/names.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-name-list',
   standalone: true,
-  imports: [NgFor, NgIf, UpdateNameComponent, CreateNameComponent],
+  imports: [NgFor, NgIf, UpdateNameComponent, CreateNameComponent, RouterLink],
   templateUrl: './name-list.component.html',
 })
 export class NameListComponent implements OnInit {

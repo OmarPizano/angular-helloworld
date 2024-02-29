@@ -1,3 +1,14 @@
-<h1>{{ title }}</h1>
+<a routerLink="/" routerLinkActive="active"><h1>{{ title }}</h1></a>
 
-<app-name-list />
+<nav>
+  <ul>
+    <li>
+      <a routerLink="/name-list">Name List</a>
+    </li>
+    <li>
+      <a routerLink="/about">About</a>
+    </li>
+  </ul>
+</nav>
+
+<router-outlet />
