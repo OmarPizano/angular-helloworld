@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from os import getenv
 
+from sqlalchemy import func
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -74,6 +76,12 @@ def names_update(id):
     name_to_update.name = data['newName'] 
     db.session.commit()
     return {}, 204
+
+@app.route('/names/search/<string:pattern>', methods = ['GET'])
+def names_search(pattern):
+    names = db.session.query(Name).filter(func.lower(Name.name).contains(pattern.lower())).all()
+    results = [name.to_dict() for name in names]
+    return results, 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
