@@ -37,6 +37,13 @@ def names_get_all():
     results = [name.to_dict() for name in names]
     return results, 200
 
+@app.route('/names/<int:id>', methods = ['GET'])
+def names_get_one(id):
+    name = db.session.get(Name, id)
+    if not name:
+        abort(404)
+    return name.to_dict(), 200
+
 @app.route('/names', methods = ['POST'])
 def names_create():
     data = request.get_json()
