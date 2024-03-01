@@ -1,11 +1,11 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { CreateNameComponent } from '../create-name/create-name.component';
-import { UpdateNameComponent } from '../update-name/update-name.component';
-import { Name } from '../models/name';
-import { NamesService } from '../services/names.service';
+import { CreateNameComponent } from './create-name/create-name.component';
+import { UpdateNameComponent } from './update-name/update-name.component';
+import { SearchNamesComponent } from './search-names/search-names.component';
+import { Name } from '../../models/name';
+import { NamesService } from '../../services/names.service';
 import { RouterLink } from '@angular/router';
-import { SearchNamesComponent } from '../search-names/search-names.component';
 
 @Component({
   selector: 'app-name-list',

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NameListComponent } from './name-list/name-list.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({

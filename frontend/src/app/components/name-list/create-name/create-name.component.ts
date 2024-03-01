@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AutofocusDirective } from '../auto-focus.directive';
+import { AutofocusDirective } from '../../../directives/auto-focus.directive';
 
 @Component({
   selector: 'app-create-name',
