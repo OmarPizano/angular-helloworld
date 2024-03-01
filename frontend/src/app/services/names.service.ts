@@ -27,4 +27,9 @@ export class NamesService {
   updateName(id: number, newName: string): Observable<Name> {
     return this.http.put<Name>(`${this.url}/names/${id}`, { newName });
   }
+
+  searchNameByName(pattern: string): Observable<Name[]> {
+    return this.http.get<Name[]>(`${this.url}/names/search/${pattern}`);
+  }
+
 }

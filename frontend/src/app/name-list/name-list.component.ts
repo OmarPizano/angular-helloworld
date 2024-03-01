@@ -5,11 +5,12 @@ import { UpdateNameComponent } from '../update-name/update-name.component';
 import { Name } from '../models/name';
 import { NamesService } from '../services/names.service';
 import { RouterLink } from '@angular/router';
+import { SearchNamesComponent } from '../search-names/search-names.component';
 
 @Component({
   selector: 'app-name-list',
   standalone: true,
-  imports: [NgFor, NgIf, UpdateNameComponent, CreateNameComponent, RouterLink],
+  imports: [NgFor, NgIf, UpdateNameComponent, CreateNameComponent, SearchNamesComponent, RouterLink],
   templateUrl: './name-list.component.html',
 })
 export class NameListComponent implements OnInit {
@@ -59,6 +60,10 @@ export class NameListComponent implements OnInit {
     this.updateNameFormEnabled = false;
   }
 
+  searchNames(pattern: string): void {
+    this.namesService.searchNameByName(pattern).subscribe(names => this.nameList = names);
+  }
+
   showUpdateForm(name: Name): void {
     this.updateNameFormEnabled = true;
     this.createNameFormEnabled = false;
@@ -77,5 +82,9 @@ export class NameListComponent implements OnInit {
 
   cancelCreate(): void {
     this.createNameFormEnabled = false;
+  }
+
+  resetList(): void {
+    this.getNameList();
   }
 }

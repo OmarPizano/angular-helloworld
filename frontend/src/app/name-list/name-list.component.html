@@ -1,4 +1,5 @@
 <h2>{{ title }}</h2>
+<app-search-names (searchButton)="searchNames($event)" (resetButton)="resetList()"/>
 <button (click)="showCreateForm()">Create</button>
 @if(nameList.length > 0) {
 <table>
@@ -19,7 +20,7 @@
   }
 </table>
 } @else {
-<p>Sorry :/, we don't have any names yet.</p>
+<p>Nothing found.</p>
 }
 @if(updateNameFormEnabled) {
 <app-update-name [name]="updatingName.name" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
