@@ -1,31 +1,59 @@
 <h1>{{ title }}</h1>
-<app-search-names (searchButton)="searchNames($event)" (resetButton)="resetList()"/>
-<button (click)="showCreateForm()">Create</button>
-@if(nameList.length > 0) {
-<table>
-  <tr>
-    <th>ID</th>
-    <th>NAME</th>
-    <th>OPS</th>
-  </tr>
-  @for (name of nameList; track name.id) {
-  <tr>
-    <td>{{name.id}}</td>
-    <td>{{name.name}}</td>
-    <td>
-      <button (click)="showUpdateForm(name)">update</button>
-      <button (click)="deleteName(name.id)">delete</button>
-    </td>
-  </tr>
+
+<hr>
+
+<div class="d-flex flex-column gap-3">
+
+  <div class="d-flex flex-row justify-content-between">
+    <button class="btn btn-secondary" (click)="showCreateForm()">Create</button>
+    <app-search-names (searchButton)="searchNames($event)" (resetButton)="resetList()"/>
+  </div>
+
+  @if(nameList.length > 0) {
+
+  <table class="table table-sm table-dark table-bordered table-hover table-striped align-middle">
+    <thead>
+      <tr>
+        <th scope="col" class="col-1 text-center">ID</th>
+        <th scope="col" class="col-9 text-center">NAME</th>
+        <th scope="col" class="col-2 text-center">ACTIONS</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (name of nameList; track name.id) {
+      <tr>
+        <td class="text-center">{{name.id}}</td>
+        <td class="text-center">{{name.name}}</td>
+        <td class="text-center">
+          <div class="d-flex gap-2 flex-row justify-content-center">
+            <button class="btn btn-sm btn-secondary" (click)="showUpdateForm(name)">update</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteName(name.id)">delete</button>
+          </div>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  } @else {
+
+  <div class="d-flex flex-row justify-content-center">
+    <p>Nothing found.</p>  
+  </div>
+
   }
-</table>
-} @else {
-<p>Nothing found.</p>
-}
-@if(updateNameFormEnabled) {
-<app-update-name [name]="updatingName.name" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
-}
-@if(createNameFormEnabled) {
-<app-create-name (createButton)="createName($event)" (cancelButton)="cancelCreate()" />
-}
-<a routerLink="../">Back to Home</a>
+
+  <div class="d-flex flex-row justify-content-start">
+  @if(updateNameFormEnabled) {
+    <app-update-name [name]="updatingName.name" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
+  }
+
+  @if(createNameFormEnabled) {
+    <app-create-name (createButton)="createName($event)" (cancelButton)="cancelCreate()" />
+  }
+  </div>
+
+  <div class="d-flex flex-row justify-content-start">
+    <a class="btn btn-secondary" routerLink="../">Back to Home</a>
+  </div>
+</div>

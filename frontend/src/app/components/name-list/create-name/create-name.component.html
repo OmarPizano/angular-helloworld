@@ -1,7 +1,8 @@
 <h2>{{ title }}</h2>
 <form (ngSubmit)="createName()">
-  <input type="text" [(ngModel)]="name" name="name" placeholder="Type your name" appAutoFocus>
-  <br>
-  <button type="submit">Create</button>
-  <button (click)="cancelCreate()">Cancel</button>
+  <div class="input-group">
+    <input class="form-control" type="text" [(ngModel)]="name" name="name" placeholder="Type your name" appAutoFocus>
+    <button class="btn btn-secondary" type="submit">Create</button>
+    <button class="btn btn-danger" (click)="cancelCreate()">Cancel</button>  
+  </div>
 </form>

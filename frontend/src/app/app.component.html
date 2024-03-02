@@ -1,35 +1,42 @@
 <div class="container-fluid">
 
-  <nav class="navbar navbar-expand-sm navbar-dark bg-secondary">
-    <div class="container-fluid">
-      <a class="navbar-brand" routerLink="/">
-        <img src="../favicon.ico" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-        {{ title }}
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/name-list">Name List</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/about">About</a>
-          </li>
-        </ul>
+  <div class="row bg-secondary justify-content-md-center">
+    <nav class="navbar navbar-expand-sm navbar-dark col-md-10 col-lg-8">
+      <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/">
+          <img src="../favicon.ico" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+          {{ title }}
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/name-list">Name List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/about">About</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav> 
-
-  <div>
-    <router-outlet />
+    </nav>
   </div>
 
-  <footer class="text-center">
-    &copy; 2024 Copyright: Helloworld App
-  </footer>
+  <div class="row min-vh-100 justify-content-md-center">
+    <div class="d-flex flex-column py-3 col-md-10 col-lg-8">
+      <router-outlet />
+    </div>
+  </div>
+
+  <div class="row p-3 bg-secondary" >
+    <footer class="text-center">
+      &copy; 2024 Copyright: Helloworld App
+    </footer>
+  </div>
+
 </div>
