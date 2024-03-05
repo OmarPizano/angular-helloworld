@@ -18,7 +18,7 @@ DB_HOST=database
 DB_NAME=helloworld
 DB_USER=root
 DB_PASSWORD=password123
-DB_URL=mysql+pymysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
+DB_URL=mysql+mysqlconnector://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
 ```
 
 Construir e iniciar los contenedores.
