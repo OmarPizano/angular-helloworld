@@ -37,3 +37,34 @@ Destruir los contenedores.
 ```
 docker compose down
 ```
+
+### Consumo del backend con `curl`
+
+Obtener usuarios.
+
+```bash
+# local
+curl 127.0.0.1:5000/names
+
+# vercel
+curl https://angular-helloworld-backend.vercel.app/names
+```
+
+Crear usuario.
+
+```bash
+# vercel
+curl https://angular-helloworld-backend.vercel.app/names -X POST -H 'content-type: application/json' -d '{"name": "nuevo usuario"}'
+```
+
+Actualizar usuario. Reemplazar `<ID>` por el correspondiente.
+
+```bash
+curl https://angular-helloworld-backend.vercel.app/names/<ID> -X PUT -H 'content-type: application/json' -d '{"newName": "nuevo"}'
+```
+
+Eliminar usuario. Reemplazar `<ID>` por el correspondiente.
+
+```bash
+curl https://angular-helloworld-backend.vercel.app/names/<ID> -X DELETE
+```
