@@ -90,19 +90,19 @@ jobs:
           script: bash services-update.sh
 
       - name: UPDATE DEPLOYMENT STATUS (SUCCESS)
-        if: steps.create_deployment.outcome == 'success' && steps.deploy.outcome == 'success'
         uses: chrnorm/deployment-status@v2
+        if: steps.create_deployment.outcome == 'success' && success()
         with:
           token: ${{ github.token }}
           environment-url: ${{ secrets.DEPLOY_URL }}
           state: 'success'
-          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          deployment-id: ${{ steps.create_deployment.outputs.deployment_id }}
       
       - name: UPDATE DEPLOYMENT STATUS (FAILURE)
-        if: steps.create_deployment.outcome == 'success' && failure()
         uses: chrnorm/deployment-status@v2
+        if: steps.create_deployment.outcome == 'success' && failure()
         with:
           token: ${{ github.token }}
           environment-url: ${{ secrets.DEPLOY_URL }}
           state: 'failure'
-          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          deployment-id: ${{ steps.create_deployment.outputs.deployment_id }}
