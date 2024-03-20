@@ -49,7 +49,7 @@ jobs:
         with:
           push: true
           file: ./docker/build/Dockerfile.backend
-          tags: tomnoir/helloworld-backend:latest, tomnoir/helloworld-backend:${{ github.run_number }}
+          tags: tomnoir/helloworld-backend:latest, tomnoir/helloworld-backend:${{ github.sha }}
       
       - name: BUILD AND PUSH FRONTEND
         uses: docker/build-push-action@v5 
@@ -58,7 +58,7 @@ jobs:
         with:
           push: true
           file: ./docker/build/Dockerfile.frontend
-          tags: tomnoir/helloworld-frontend:latest, tomnoir/helloworld-frontend:${{ github.run_number }}
+          tags: tomnoir/helloworld-frontend:latest, tomnoir/helloworld-frontend:${{ github.sha }}
       
       - name: BUILD AND PUSH PROXY
         uses: docker/build-push-action@v5 
@@ -67,7 +67,7 @@ jobs:
         with:
           push: true
           file: ./docker/build/Dockerfile.proxy
-          tags: tomnoir/helloworld-proxy:latest, tomnoir/helloworld-proxy:${{ github.run_number }}
+          tags: tomnoir/helloworld-proxy:latest, tomnoir/helloworld-proxy:${{ github.sha }}
 
       - name: CREATE DEPLOYMENT
         uses: chrnorm/deployment-action@v2
