@@ -33,6 +33,24 @@ class Name(db.Model):
             'name': self.name
         }
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    role = db.Column(db.String(20), nullable=False)
+
+    def __init__(self, username:str, password:str, is_admin = False) -> None:
+       self.username = username 
+       self.password = password
+       self.role = 'admin' if is_admin else 'normal'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user': self.username,
+            'role': self.role
+        }
+
 with app.app_context():
     db.create_all()
 
