@@ -61,6 +61,22 @@ URL_PREFIX = '/api'
 def api_version():
     return {"api_version": "v0.1"}, 200
 
+@app.route(URL_PREFIX + '/auth', methods = ['POST'])
+def auth():
+    data = request.get_json()
+    required_params = ['username', 'password']
+    for param in required_params:
+        if param not in data:
+            abort(400)
+    results = db.session.query(User).filter(User.username == data['username']).all()
+    if len(results) == 0:
+        abort(404)
+    user = results[0]
+    if user.password != data['password']:
+        abort(403)
+    token = create_access_token(identity=user.id)
+    return jsonify(token=token), 200
+
 @app.route(URL_PREFIX + '/names', methods = ['GET'])
 def names_get_all():
     names = Name.query.all()
