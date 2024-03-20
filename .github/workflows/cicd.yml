@@ -1,0 +1,64 @@
+name: Build, push and deploy
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+
+  build_push_deploy:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+   
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up path filters
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - 'docker/build/Dockerfile.backend'
+            frontend:
+              - 'frontend/**'
+              - 'docker/build/Dockerfile.frontend'
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        if: steps.filter.outputs.backend == 'true' || steps.filter.outputs.frontend == 'true'
+        with:
+          username: tomnoir
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      
+      - name: Build backend
+        uses: docker/build-push-action@v5 
+        id: build_backend
+        if: steps.filter.outputs.backend == 'true'
+        with:
+          push: true
+          file: ./docker/build/Dockerfile.backend
+          tags: tomnoir/helloworld-backend:latest
+      
+      - name: Build frontend
+        uses: docker/build-push-action@v5 
+        id: build_frontend
+        if: steps.filter.outputs.frontend == 'true'
+        with:
+          push: true
+          file: ./docker/build/Dockerfile.frontend
+          tags: tomnoir/helloworld-frontend:latest
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        if: steps.build_backend.outcome == 'success' || steps.build_frontend.outcome == 'success'
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          password: ${{ secrets.PROD_PASSWORD }}
+          port: ${{ secrets.PROD_PORT }}
+          script: bash services/deploy.sh
