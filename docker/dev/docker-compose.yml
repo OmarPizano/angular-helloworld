@@ -34,6 +34,7 @@ services:
       - database
     environment:
       DB_URL: mysql+mysqlconnector://root:toor@database/helloworld
+      JWT_SECRET: thisisasecret123
     ports:
       - 127.0.0.1:5000:5000
     volumes:

@@ -1,9 +1,11 @@
-from flask import Flask, abort, request
+from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager, create_access_token
 from dotenv import load_dotenv
 from os import getenv
 
+from jinja2.runtime import identity
 from sqlalchemy import func
 
 load_dotenv()
@@ -11,7 +13,9 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DB_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET')
 CORS(app)
+jwt = JWTManager(app)
 
 db = SQLAlchemy(app)
 
