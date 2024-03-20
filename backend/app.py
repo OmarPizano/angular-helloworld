@@ -37,7 +37,7 @@ URL_PREFIX = '/api'
 # rutas
 @app.route(URL_PREFIX, methods = ['GET'])
 def api_version():
-    return {"api_version": "v0.0.1"}, 200
+    return {"api_version": "v0.1"}, 200
 
 @app.route(URL_PREFIX + '/names', methods = ['GET'])
 def names_get_all():
