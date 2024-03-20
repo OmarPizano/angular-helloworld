@@ -32,21 +32,23 @@ class Name(db.Model):
 with app.app_context():
     db.create_all()
 
+URL_PREFIX = '/api'
+
 # rutas
-@app.route('/names', methods = ['GET'])
+@app.route(URL_PREFIX + '/names', methods = ['GET'])
 def names_get_all():
     names = Name.query.all()
     results = [name.to_dict() for name in names]
     return results, 200
 
-# @app.route('/names/<int:id>', methods = ['GET'])
-# def names_get_one(id):
-#     name = db.session.get(Name, id)
-#     if not name:
-#         abort(404)
-#     return name.to_dict(), 200
+@app.route(URL_PREFIX+'/names/<int:id>', methods = ['GET'])
+def names_get_one(id):
+    name = db.session.get(Name, id)
+    if not name:
+        abort(404)
+    return name.to_dict(), 200
 
-@app.route('/names', methods = ['POST'])
+@app.route(URL_PREFIX + '/names', methods = ['POST'])
 def names_create():
     data = request.get_json()
     if 'name' not in data:
@@ -56,7 +58,7 @@ def names_create():
     db.session.commit()
     return new_name.to_dict(), 201
     
-@app.route('/names/<int:id>', methods = ['DELETE'])
+@app.route(URL_PREFIX + '/names/<int:id>', methods = ['DELETE'])
 def names_delete(id):
     name_to_delete = db.session.get(Name, id)
     if not name_to_delete:
@@ -65,7 +67,7 @@ def names_delete(id):
     db.session.commit()
     return {}, 204
 
-@app.route('/names/<int:id>', methods = ['PUT'])
+@app.route(URL_PREFIX + '/names/<int:id>', methods = ['PUT'])
 def names_update(id):
     data = request.get_json()
     if 'newName' not in data:
@@ -77,7 +79,7 @@ def names_update(id):
     db.session.commit()
     return {}, 204
 
-@app.route('/names/search/<string:pattern>', methods = ['GET'])
+@app.route(URL_PREFIX + '/names/search/<string:pattern>', methods = ['GET'])
 def names_search(pattern):
     names = db.session.query(Name).filter(func.lower(Name.name).contains(pattern.lower())).all()
     results = [name.to_dict() for name in names]
