@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - 'main'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
 
@@ -35,6 +40,18 @@ jobs:
               - 'docker/build/Dockerfile.proxy'
               - 'docker/build/nginx-proxy.conf'
       
+      - name: DOCKER METADATA BACKEND
+        uses: docker/metadata-action@v5
+        id: meta-backend
+        with:
+          images: tomnoir/helloworld-backend
+
+      - name: DOCKER METADATA FRONTEND
+        uses: docker/metadata-action@v5
+        id: meta-frontend
+        with:
+          images: tomnoir/helloworld-frontend
+
       - name: LOGIN TO DOCKERHUB
         uses: docker/login-action@v3
         if: steps.filter.outputs.backend == 'true' || steps.filter.outputs.frontend == 'true' || steps.filter.outputs.proxy == 'true'
@@ -42,25 +59,25 @@ jobs:
           username: tomnoir
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       
-      - name: BUILD BACKEND
+      - name: BUILD AND PUSH BACKEND
         uses: docker/build-push-action@v5 
         id: build_backend
         if: steps.filter.outputs.backend == 'true'
         with:
           push: true
           file: ./docker/build/Dockerfile.backend
-          tags: tomnoir/helloworld-backend:latest
+          tags: ${{ steps.meta-backend.outputs.tags }}
       
-      - name: BUILD FRONTEND
+      - name: BUILD AND PUSH FRONTEND
         uses: docker/build-push-action@v5 
         id: build_frontend
         if: steps.filter.outputs.frontend == 'true'
         with:
           push: true
           file: ./docker/build/Dockerfile.frontend
-          tags: tomnoir/helloworld-frontend:latest
+          tags: ${{ steps.meta-frontend.outputs.tags }}
       
-      - name: BUILD PROXY
+      - name: BUILD AND PUSH PROXY
         uses: docker/build-push-action@v5 
         id: build_proxy
         if: steps.filter.outputs.proxy == 'true'
