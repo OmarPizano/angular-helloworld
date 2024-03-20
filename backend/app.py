@@ -6,8 +6,6 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from os import getenv
-
-from jinja2.runtime import identity
 from sqlalchemy import func
 
 load_dotenv()
@@ -24,7 +22,7 @@ bcrypt = Bcrypt(app)
 
 db = SQLAlchemy(app)
 
-# modelo
+# MODELOS
 class Name(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -61,11 +59,12 @@ with app.app_context():
 
 URL_PREFIX = '/api'
 
-# rutas
+# RUTAS
 @app.route(URL_PREFIX, methods = ['GET'])
 def api_version():
     return {"api_version": "v0.1"}, 200
 
+# AUTENTICACIÓN
 @app.route(URL_PREFIX + '/auth', methods = ['POST'])
 def auth():
     data = request.get_json()
@@ -82,6 +81,77 @@ def auth():
     token = create_access_token(identity=user.id, additional_claims={"name": user.username, "role": user.role})
     return jsonify(token=token), 200
 
+# USUARIOS
+@app.route(URL_PREFIX + '/users', methods = ['GET'])
+@jwt_required()
+def users_get_all():
+    users = User.query.all()
+    results = [user.to_dict() for user in users]
+    return results, 200
+
+@app.route(URL_PREFIX + '/users/<int:id>', methods = ['GET'])
+@jwt_required()
+def users_get_one(id):
+    user = db.session.get(User, id)
+    if not user:
+        abort(404)
+    return user.to_dict(), 200
+
+@app.route(URL_PREFIX + '/users', methods = ['POST'])
+@jwt_required()
+def users_create():
+    data = request.get_json()
+    required_params = ['username', 'password', 'is_admin']
+    for param in required_params:
+        if param not in data:
+            abort(400)
+    new_user = User(username=data['username'], password=data['password'], is_admin=data['is_admin'])
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user.to_dict(), 201
+
+@app.route(URL_PREFIX + '/users/<int:id>', methods = ['PUT'])
+@jwt_required()
+def users_update(id):
+    data = request.get_json()
+    optional_params = ['username', 'password', 'is_admin']
+    selected_params = []
+    for param in optional_params:
+        if param in data:
+            selected_params.append(param)
+    if len(selected_params) == 0:
+        abort(400)
+    user_to_update = db.session.get(User, id)
+    if not user_to_update:
+        abort(404)
+    for param in selected_params:
+        if param == 'password':
+            user_to_update.password = bcrypt.generate_password_hash(data[param])
+        if param == 'is_admin':
+            user_to_update.role = 'admin' if data['is_admin'] else 'normal'
+        if param == 'username':
+            user_to_update.username = data['username']
+    db.session.commit()
+    return {}, 204
+
+@app.route(URL_PREFIX + '/users/<int:id>', methods = ['DELETE'])
+@jwt_required()
+def users_delete(id):
+    user_to_delete = db.session.get(User, id)
+    if not user_to_delete:
+        abort(404)
+    db.session.delete(user_to_delete)
+    db.session.commit()
+    return {}, 204
+
+@app.route(URL_PREFIX + '/users/search/<string:pattern>', methods = ['GET'])
+@jwt_required()
+def users_search(pattern):
+    users = db.session.query(User).filter(func.lower(User.username).contains(pattern.lower())).all()
+    results = [user.to_dict() for user in users]
+    return results, 200
+
+# NOMBRES
 @app.route(URL_PREFIX + '/names', methods = ['GET'])
 @jwt_required()
 def names_get_all():
