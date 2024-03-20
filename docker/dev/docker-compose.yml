@@ -5,8 +5,8 @@ services:
     image: mysql
     container_name: helloworld_db
     environment:
-      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-      MYSQL_DATABASE: $DB_NAME
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: helloworld
     ports:
       - 127.0.0.1:3306:3306
     volumes:
@@ -33,7 +33,7 @@ services:
     depends_on:
       - database
     environment:
-      DB_URL: $DB_URL
+      DB_URL: mysql+mysqlconnector://root:toor@database/helloworld
     ports:
       - 127.0.0.1:5000:5000
     volumes:
