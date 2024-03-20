@@ -2,6 +2,7 @@ from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager, create_access_token
+from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from os import getenv
 
@@ -16,6 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET')
 CORS(app)
 jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 
 db = SQLAlchemy(app)
 
@@ -41,7 +43,7 @@ class User(db.Model):
 
     def __init__(self, username:str, password:str, is_admin = False) -> None:
        self.username = username 
-       self.password = password
+       self.password = bcrypt.generate_password_hash(password)
        self.role = 'admin' if is_admin else 'normal'
 
     def to_dict(self):
@@ -72,7 +74,7 @@ def auth():
     if len(results) == 0:
         abort(404)
     user = results[0]
-    if user.password != data['password']:
+    if not bcrypt.check_password_hash(user.password, data['password']):
         abort(403)
     token = create_access_token(identity=user.id)
     return jsonify(token=token), 200
