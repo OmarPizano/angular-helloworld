@@ -1,7 +1,7 @@
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from os import getenv
@@ -80,12 +80,14 @@ def auth():
     return jsonify(token=token), 200
 
 @app.route(URL_PREFIX + '/names', methods = ['GET'])
+@jwt_required()
 def names_get_all():
     names = Name.query.all()
     results = [name.to_dict() for name in names]
     return results, 200
 
 @app.route(URL_PREFIX+'/names/<int:id>', methods = ['GET'])
+@jwt_required()
 def names_get_one(id):
     name = db.session.get(Name, id)
     if not name:
@@ -93,6 +95,7 @@ def names_get_one(id):
     return name.to_dict(), 200
 
 @app.route(URL_PREFIX + '/names', methods = ['POST'])
+@jwt_required()
 def names_create():
     data = request.get_json()
     if 'name' not in data:
@@ -103,6 +106,7 @@ def names_create():
     return new_name.to_dict(), 201
     
 @app.route(URL_PREFIX + '/names/<int:id>', methods = ['DELETE'])
+@jwt_required()
 def names_delete(id):
     name_to_delete = db.session.get(Name, id)
     if not name_to_delete:
@@ -112,6 +116,7 @@ def names_delete(id):
     return {}, 204
 
 @app.route(URL_PREFIX + '/names/<int:id>', methods = ['PUT'])
+@jwt_required()
 def names_update(id):
     data = request.get_json()
     if 'newName' not in data:
@@ -124,6 +129,7 @@ def names_update(id):
     return {}, 204
 
 @app.route(URL_PREFIX + '/names/search/<string:pattern>', methods = ['GET'])
+@jwt_required()
 def names_search(pattern):
     names = db.session.query(Name).filter(func.lower(Name.name).contains(pattern.lower())).all()
     results = [name.to_dict() for name in names]
