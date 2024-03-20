@@ -1,0 +1,17 @@
+# build stage
+FROM node:latest AS builder
+RUN npm install -g @angular/cli
+WORKDIR /app
+COPY frontend/ /app
+RUN npm install
+RUN ng build --configuration production
+
+# prod stage
+FROM nginx:latest
+ENV API_URL http://127.0.0.1:5000
+COPY docker/build/nginx-frontend.conf /etc/nginx/nginx.conf
+COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["/bin/bash", "-c", "sed -i s#API_URL_PLACEHOLDER#$API_URL#g /usr/share/nginx/html/main*.js && nginx -g 'daemon off;'"]
