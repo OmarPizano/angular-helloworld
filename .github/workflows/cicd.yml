@@ -9,6 +9,9 @@ jobs:
 
   build_push_deploy:
 
+    permissions:
+      deployments: write
+
     runs-on: ubuntu-latest
     
     steps:
@@ -53,6 +56,14 @@ jobs:
           file: ./docker/build/Dockerfile.frontend
           tags: tomnoir/helloworld-frontend:latest
 
+      - name: Create deployment
+        uses: chrnorm/deployment-action@v2
+        id: deployment
+        with:
+          token: ${{ github.token }}
+          environment-url: ${{ secrets.DEPLOY_URL }}
+          environment: production
+
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.3
         if: steps.build_backend.outcome == 'success' || steps.build_frontend.outcome == 'success'
@@ -62,3 +73,21 @@ jobs:
           key: ${{ secrets.PROD_KEY }}
           port: ${{ secrets.PROD_PORT }}
           script: bash services/deploy.sh
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          environment-url: ${{ secrets.DEPLOY_URL }}
+          state: 'success'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+      
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          environment-url: ${{ secrets.DEPLOY_URL }}
+          state: 'failure'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
