@@ -37,7 +37,7 @@ jobs:
       
       - name: LOGIN TO DOCKERHUB
         uses: docker/login-action@v3
-        if: steps.filter.outputs.backend == 'true' || steps.filter.outputs.frontend == 'true'
+        if: steps.filter.outputs.backend == 'true' || steps.filter.outputs.frontend == 'true' || steps.filter.outputs.proxy == 'true'
         with:
           username: tomnoir
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -71,7 +71,7 @@ jobs:
 
       - name: CREATE DEPLOYMENT
         uses: chrnorm/deployment-action@v2
-        if: steps.build_backend.outcome == 'success' || steps.build_frontend.outcome == 'success'
+        if: steps.build_backend.outcome == 'success' || steps.build_frontend.outcome == 'success' || steps.build_proxy.outcome == 'success'
         id: create_deployment
         with:
           token: ${{ github.token }}
@@ -87,7 +87,7 @@ jobs:
           username: ${{ secrets.PROD_USERNAME }}
           key: ${{ secrets.PROD_KEY }}
           port: ${{ secrets.PROD_PORT }}
-          script: bash services/deploy.sh
+          script: bash services-update.sh
 
       - name: UPDATE DEPLOYMENT STATUS (SUCCESS)
         if: steps.create_deployment.outcome == 'success' && steps.deploy.outcome == 'success'
@@ -99,7 +99,7 @@ jobs:
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
       
       - name: UPDATE DEPLOYMENT STATUS (FAILURE)
-        if: steps.deployment.outcome == 'success' && failure()
+        if: steps.create_deployment.outcome == 'success' && failure()
         uses: chrnorm/deployment-status@v2
         with:
           token: ${{ github.token }}
