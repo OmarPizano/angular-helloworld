@@ -16,10 +16,10 @@ jobs:
     
     steps:
    
-      - name: Checkout repository
+      - name: CHECKOUT REPOSITORY
         uses: actions/checkout@v2
 
-      - name: Set up path filters
+      - name: SET UP PATH FILTERS
         uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -31,14 +31,14 @@ jobs:
               - 'frontend/**'
               - 'docker/build/Dockerfile.frontend'
       
-      - name: Login to DockerHub
+      - name: LOGIN TO DOCKERHUB
         uses: docker/login-action@v3
         if: steps.filter.outputs.backend == 'true' || steps.filter.outputs.frontend == 'true'
         with:
           username: tomnoir
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       
-      - name: Build backend
+      - name: BUILD BACKEND
         uses: docker/build-push-action@v5 
         id: build_backend
         if: steps.filter.outputs.backend == 'true'
@@ -47,7 +47,7 @@ jobs:
           file: ./docker/build/Dockerfile.backend
           tags: tomnoir/helloworld-backend:latest
       
-      - name: Build frontend
+      - name: BUILD FRONTEND
         uses: docker/build-push-action@v5 
         id: build_frontend
         if: steps.filter.outputs.frontend == 'true'
@@ -56,17 +56,19 @@ jobs:
           file: ./docker/build/Dockerfile.frontend
           tags: tomnoir/helloworld-frontend:latest
 
-      - name: Create deployment
+      - name: CREATE DEPLOYMENT
         uses: chrnorm/deployment-action@v2
-        id: deployment
+        if: steps.build_backend.outcome == 'success' || steps.build_frontend.outcome == 'success'
+        id: create_deployment
         with:
           token: ${{ github.token }}
           environment-url: ${{ secrets.DEPLOY_URL }}
           environment: production
 
-      - name: Deploy
+      - name: DEPLOY TO PRODUCTION SERVER
         uses: appleboy/ssh-action@v1.0.3
-        if: steps.build_backend.outcome == 'success' || steps.build_frontend.outcome == 'success'
+        id: deploy
+        if: steps.create_deployment.outcome == 'success'
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USERNAME }}
@@ -74,8 +76,8 @@ jobs:
           port: ${{ secrets.PROD_PORT }}
           script: bash services/deploy.sh
 
-      - name: Update deployment status (success)
-        if: success()
+      - name: UPDATE DEPLOYMENT STATUS (SUCCESS)
+        if: steps.create_deployment.outcome == 'success' && steps.deploy.outcome == 'success'
         uses: chrnorm/deployment-status@v2
         with:
           token: ${{ github.token }}
@@ -83,8 +85,8 @@ jobs:
           state: 'success'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
       
-      - name: Update deployment status (failure)
-        if: failure()
+      - name: UPDATE DEPLOYMENT STATUS (FAILURE)
+        if: steps.deployment.outcome == 'success' && failure()
         uses: chrnorm/deployment-status@v2
         with:
           token: ${{ github.token }}
