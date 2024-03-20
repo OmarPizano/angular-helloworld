@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - 'main'
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - 'main'
 
 jobs:
 
@@ -40,18 +35,6 @@ jobs:
               - 'docker/build/Dockerfile.proxy'
               - 'docker/build/nginx-proxy.conf'
       
-      - name: DOCKER METADATA BACKEND
-        uses: docker/metadata-action@v5
-        id: meta-backend
-        with:
-          images: tomnoir/helloworld-backend
-
-      - name: DOCKER METADATA FRONTEND
-        uses: docker/metadata-action@v5
-        id: meta-frontend
-        with:
-          images: tomnoir/helloworld-frontend
-
       - name: LOGIN TO DOCKERHUB
         uses: docker/login-action@v3
         if: steps.filter.outputs.backend == 'true' || steps.filter.outputs.frontend == 'true' || steps.filter.outputs.proxy == 'true'
@@ -66,7 +49,7 @@ jobs:
         with:
           push: true
           file: ./docker/build/Dockerfile.backend
-          tags: ${{ steps.meta-backend.outputs.tags }}
+          tags: tomnoir/helloworld-backend:latest, tomnoir/helloworld-backend:${{ github.run_number }}
       
       - name: BUILD AND PUSH FRONTEND
         uses: docker/build-push-action@v5 
@@ -75,7 +58,7 @@ jobs:
         with:
           push: true
           file: ./docker/build/Dockerfile.frontend
-          tags: ${{ steps.meta-frontend.outputs.tags }}
+          tags: tomnoir/helloworld-frontend:latest, tomnoir/helloworld-frontend:${{ github.run_number }}
       
       - name: BUILD AND PUSH PROXY
         uses: docker/build-push-action@v5 
@@ -84,7 +67,7 @@ jobs:
         with:
           push: true
           file: ./docker/build/Dockerfile.proxy
-          tags: tomnoir/helloworld-proxy:latest
+          tags: tomnoir/helloworld-proxy:latest, tomnoir/helloworld-proxy:${{ github.run_number }}
 
       - name: CREATE DEPLOYMENT
         uses: chrnorm/deployment-action@v2
