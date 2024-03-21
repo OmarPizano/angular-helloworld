@@ -1,9 +1,10 @@
 from datetime import timedelta
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
+from flask_jwt_extended.internal_utils import verify_token_type
 from flask_jwt_extended.utils import get_jwt
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, decode_token, get_jwt_identity, jwt_required
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from os import getenv
@@ -81,6 +82,15 @@ def auth():
         abort(403)
     token = create_access_token(identity=user.id, additional_claims={"username": user.username, "role": user.role})
     return jsonify(token=token), 200
+
+@app.route(URL_PREFIX + '/auth/verify', methods = ['POST'])
+def verify_token():
+    data = request.get_json()
+    if 'token' not in data:
+        abort(400)
+    token = data['token']
+    decode_token(token)
+    return {"status": "ok"}, 200
 
 # USUARIOS
 @app.route(URL_PREFIX + '/users', methods = ['GET'])
