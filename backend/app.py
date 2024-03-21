@@ -1,5 +1,6 @@
 from datetime import timedelta
 from flask import Flask, abort, jsonify, request
+import flask
 from flask_cors import CORS
 from flask_jwt_extended.internal_utils import verify_token_type
 from flask_jwt_extended.utils import get_jwt
@@ -52,7 +53,7 @@ class User(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'user': self.username,
+            'username': self.username,
             'role': self.role
         }
 
@@ -80,17 +81,17 @@ def auth():
     user = results[0]
     if not bcrypt.check_password_hash(user.password, data['password']):
         abort(403)
-    token = create_access_token(identity=user.id, additional_claims={"username": user.username, "role": user.role})
+    token = create_access_token(identity=user.id)
     return jsonify(token=token), 200
 
-@app.route(URL_PREFIX + '/auth/verify', methods = ['POST'])
+@app.route(URL_PREFIX + '/auth/verify', methods = ['GET'])
+@jwt_required()
 def verify_token():
-    data = request.get_json()
-    if 'token' not in data:
-        abort(400)
-    token = data['token']
+    headers = flask.request.headers
+    bearer = headers.get('Authorization')
+    token = str(bearer).split()[1]
     decode_token(token)
-    return {"status": "ok"}, 200
+    return {}, 204
 
 @app.route(URL_PREFIX + '/auth/data', methods = ['GET'])
 @jwt_required()
