@@ -17,8 +17,11 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    if (this.authService.getToken()) {
-      this.isLoggedIn = true;
-    }
+    this.authService.loggedInUsername$.subscribe(
+      (username) => {
+        this.username = username.toUpperCase();
+        this.isLoggedIn = true;
+      })
+    this.authService.checkSession();
   }
 }

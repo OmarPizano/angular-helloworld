@@ -19,7 +19,7 @@ export class LoginComponent {
   login(username: string, password: string): void {
     this.authService.authCredentials(username, password).subscribe(
       (token) => {
-        this.authService.setToken(token.token);
+        this.authService.createSession(username, token.token);
         this.router.navigateByUrl('/');
       }
     )
