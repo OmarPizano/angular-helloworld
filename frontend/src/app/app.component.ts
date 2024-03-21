@@ -20,7 +20,9 @@ export class AppComponent implements OnInit {
     this.authService.loggedInUsername$.subscribe(
       (username) => {
         this.username = username.toUpperCase();
-        this.isLoggedIn = true;
+        if (username !== '') {
+          this.isLoggedIn = true;
+        }
       })
     this.authService.checkSession();
   }
