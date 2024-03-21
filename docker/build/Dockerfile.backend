@@ -1,5 +1,6 @@
 FROM python:latest
 
+ENV JTW_SECRET thisisasecret123
 ENV DB_URL mysql+mysqlconnector://root:toor:127.0.0.1/helloworld
 
 WORKDIR /home/python
