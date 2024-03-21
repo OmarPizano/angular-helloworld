@@ -17,12 +17,16 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   login(username: string, password: string): void {
-    this.authService.authCredentials(username, password).subscribe(
-      (token) => {
-        this.authService.createSession(username, token.token);
+    this.authService.generateUserToken(username, password).subscribe({
+      next: (data) => {
+        this.authService.saveToken(data.token);
+        this.authService.getUserLoginData();
         this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        console.log(err);
       }
-    )
+    })
   }
 }
 

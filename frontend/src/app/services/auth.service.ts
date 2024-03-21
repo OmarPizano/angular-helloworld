@@ -3,43 +3,55 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
 
+const API_URL = environment.apiURL;
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private url = environment.apiURL;
-
-  private loggedInUsernameSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public loggedInUsername$: Observable<string> = this.loggedInUsernameSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
-  authCredentials(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.url}/auth`, {username, password});
+  private userLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public userLoggedIn$: Observable<boolean> = this.userLoggedInSubject.asObservable();
+
+  private userLoginDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public userLoginData$: Observable<any> = this.userLoginDataSubject.asObservable();
+
+  // login component
+  generateUserToken(username: string, password: string): Observable<any> {
+    return this.http.post(API_URL + '/auth', {username, password});
   }
 
-  checkSession(): void {
-    const status = sessionStorage.getItem('token');
-    const username = sessionStorage.getItem('username');
-    if ( status && username ) {
-      this.loggedInUsernameSubject.next(username);
-    }
+  // componente principal
+  verifyCurrentToken(): Observable<any> {
+    return this.http.get(API_URL + '/auth/verify');
   }
 
-  createSession(username: string, token: string): void {
+  // al iniciar sesión y al recargar
+  getUserLoginData(): void {
+    this.http.get(API_URL + '/auth/data').subscribe(
+      (data) => {
+        this.userLoggedInSubject.next(true);
+        this.userLoginDataSubject.next(data);
+      }
+    )
+  }
+
+  // al iniciar sesión
+  saveToken(token: string): void {
     sessionStorage.setItem('token', token);
-    sessionStorage.setItem('username', username);
-    this.loggedInUsernameSubject.next(username);
   }
 
+  // httpinterceptor
   getToken(): string|null {
-    // usado por httpinterceptor
     return sessionStorage.getItem('token');
   }
 
-  logout(): void {
+  // logout
+  removeTokenAndUserData(): void {
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('username');
-    this.loggedInUsernameSubject.next('');
+    this.userLoginDataSubject.next({});
+    this.userLoggedInSubject.next(false);
   }
 }

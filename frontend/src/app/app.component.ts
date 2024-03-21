@@ -11,26 +11,28 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
   title = 'Helloworld App';
 
-  isLoggedIn: boolean = false;
-  username: string = '';
+  userLoggedIn: boolean = false;
+  userData: any = {}
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService.loggedInUsername$.subscribe(
-      (username) => {
-        this.username = username.toUpperCase();
-        if (username !== '') {
-          this.isLoggedIn = true;
+    if (this.authService.getToken() != null) {
+      this.authService.userLoggedIn$.subscribe( userStatus => this.userLoggedIn = userStatus );
+      this.authService.userLoginData$.subscribe( userData => this.userData = userData );
+      this.authService.verifyCurrentToken().subscribe(
+        () => {
+          this.authService.getUserLoginData();
         }
-      })
-    this.authService.checkSession();
+      )
+    }
   }
   
   logout(): void {
-    this.authService.logout();
+    this.authService.removeTokenAndUserData();
+    this.userLoggedIn = false;
+    this.userData = {};
     this.router.navigateByUrl('/')
-    this.isLoggedIn = false;
   }
 
 }
