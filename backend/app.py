@@ -92,6 +92,15 @@ def verify_token():
     decode_token(token)
     return {"status": "ok"}, 200
 
+@app.route(URL_PREFIX + '/auth/data', methods = ['GET'])
+@jwt_required()
+def get_auth_data():
+    user_id = get_jwt_identity()
+    auth_data = db.session.get(User, user_id)
+    if not auth_data:
+        abort(404)
+    return auth_data.to_dict(), 200
+
 # USUARIOS
 @app.route(URL_PREFIX + '/users', methods = ['GET'])
 @jwt_required()
