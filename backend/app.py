@@ -1,8 +1,9 @@
 from datetime import timedelta
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
+from flask_jwt_extended.utils import get_jwt
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from os import getenv
@@ -85,6 +86,9 @@ def auth():
 @app.route(URL_PREFIX + '/users', methods = ['GET'])
 @jwt_required()
 def users_get_all():
+    user_data = get_jwt()
+    if user_data['role'] != 'admin':
+        abort(403)
     users = User.query.all()
     results = [user.to_dict() for user in users]
     return results, 200
@@ -92,6 +96,10 @@ def users_get_all():
 @app.route(URL_PREFIX + '/users/<int:id>', methods = ['GET'])
 @jwt_required()
 def users_get_one(id):
+    user_id = get_jwt_identity()
+    user_data = get_jwt()
+    if user_data['role'] != 'admin' and id != user_id:
+        abort(403)
     user = db.session.get(User, id)
     if not user:
         abort(404)
@@ -100,6 +108,9 @@ def users_get_one(id):
 @app.route(URL_PREFIX + '/users', methods = ['POST'])
 @jwt_required()
 def users_create():
+    user_data = get_jwt()
+    if user_data['role'] != 'admin':
+        abort(403)
     data = request.get_json()
     required_params = ['username', 'password', 'is_admin']
     for param in required_params:
@@ -114,6 +125,10 @@ def users_create():
 @jwt_required()
 def users_update(id):
     data = request.get_json()
+    user_data = get_jwt()
+    user_id = get_jwt_identity()
+    if user_data['role'] != 'admin' and user_id != id:
+        abort(403)
     optional_params = ['username', 'password', 'is_admin']
     selected_params = []
     for param in optional_params:
@@ -137,6 +152,10 @@ def users_update(id):
 @app.route(URL_PREFIX + '/users/<int:id>', methods = ['DELETE'])
 @jwt_required()
 def users_delete(id):
+    user_data = get_jwt()
+    user_id = get_jwt_identity()
+    if user_data['role'] != 'admin' and user_id != id:
+        abort(403)
     user_to_delete = db.session.get(User, id)
     if not user_to_delete:
         abort(404)
@@ -147,6 +166,9 @@ def users_delete(id):
 @app.route(URL_PREFIX + '/users/search/<string:pattern>', methods = ['GET'])
 @jwt_required()
 def users_search(pattern):
+    user_data = get_jwt()
+    if user_data['role'] != 'admin':
+        abort(403)
     users = db.session.query(User).filter(func.lower(User.username).contains(pattern.lower())).all()
     results = [user.to_dict() for user in users]
     return results, 200
