@@ -27,10 +27,13 @@ Acceso a servicios.
 
 - **frontend**: ir a `http://127.0.0.1:4200`
 - **backend**:
-    - `curl http://127.0.0.1:5000/names`
-    - `curl http://127.0.0.1:5000/names -X POST -H 'content-type: application/json' -d '{"name":"nuevo"}'`
-    - `curl http://127.0.0.1:5000/names/1 -X PUT -H 'content-type: application/json' -d '{"newName":"nuevo2"}'`
-    - `curl http://127.0.0.1:5000/names/1 -X DELETE`
+    - `curl http://127.0.0.1:5000/api/auth -X POST -H 'content-type: application/json' -d '{"username": "root", "password": "toor"}'`
+    - `curl http://127.0.0.1:5000/api/users -X GET -H 'Autorization: Bearer TOKEN'`
+    - ...
+    - `curl http://127.0.0.1:5000/api/names`
+    - `curl http://127.0.0.1:5000/api/names -X POST -H 'content-type: application/json' -d '{"name":"nuevo"}'`
+    - `curl http://127.0.0.1:5000/api/names/1 -X PUT -H 'content-type: application/json' -d '{"newName":"nuevo2"}'`
+    - `curl http://127.0.0.1:5000/api/names/1 -X DELETE`
 - **database**:
     - `mysql -h 127.0.0.1 -u root -ptoor`
     - `mysqldump -h 127.0.0.1 -u root -ptoor helloworld > data.sql`
@@ -44,6 +47,7 @@ docker run -d \
     -p 5000:5000 \
     --name backend
     --env="DB_URL=mysql+mysqlconnector://user:password@host/database"
+    --env="JWT_SECRET=thisisasecret123"
     --restart always
     tomnoir/helloworld-backend
 ```
