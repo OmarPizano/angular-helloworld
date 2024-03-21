@@ -79,7 +79,7 @@ def auth():
     user = results[0]
     if not bcrypt.check_password_hash(user.password, data['password']):
         abort(403)
-    token = create_access_token(identity=user.id, additional_claims={"name": user.username, "role": user.role})
+    token = create_access_token(identity=user.id, additional_claims={"username": user.username, "role": user.role})
     return jsonify(token=token), 200
 
 # USUARIOS
