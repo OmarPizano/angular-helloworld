@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,17 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   imports: [RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Helloworld App';
+
+  isLoggedIn: boolean = false;
+  username: string = '';
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    if (this.authService.getToken()) {
+      this.isLoggedIn = true;
+    }
+  }
 }
