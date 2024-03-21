@@ -1,0 +1,20 @@
+<h1>{{ title }}</h1>
+
+<hr>
+
+<div class="container py-4">
+  <form (ngSubmit)="authenticateCredentials()">
+    <div class="d-flex flex-column col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto gap-4 p-3 shadow border border-secondary rounded" style="height: 50vh;">
+      <div class="d-flex flex-column my-2 gap-3">
+        <input class="form-control" type="text" [(ngModel)]="username" name="username" placeholder="Username" appAutoFocus>
+        <input class="form-control" type="text" [(ngModel)]="password" name="password" placeholder="Password">
+      </div>
+      <div class="d-flex flex-column my-3">
+        <button class="btn btn-secondary" type="submit">Login</button>
+      </div>
+      <div class="d-flex flex-row my-3 text-center">
+        For now, only registered accounts can log in.
+      </div>
+    </div>
+  </form>
+</div>
