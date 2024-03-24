@@ -23,13 +23,13 @@
             <li class="nav-item">
               <a class="nav-link" routerLink="/about">About</a>
             </li>
-            <div class="d-sm-flex ms-sm-auto">
+            <div class="d-sm-flex ms-sm-auto align-items-center">
               @if(userLoggedIn) {
-              <li class="nav-item">
-                <a class="nav-link" (click)="logout()">Logout</a>
+              <li class="nav-item mx-2">
+                <a class="nav-link" (click)="logout()" routerLink="">Logout</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active text-uppercase rounded-4 px-3 bg-dark" routerLink="/account">{{ userData.username }}</a>
+                <a class="btn btn-outline-dark text-uppercase" routerLink="/account">{{ userData.username }}</a>
               </li>
               } @else {
               <li class="nav-item">
