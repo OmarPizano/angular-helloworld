@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-sm navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">
+      <img src="../favicon.ico" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      {{ brandName }}
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav w-100">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+        </li>
+        @if(userLoggedIn) {
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/name-list">Names</a>
+        </li>
+        }
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about">About</a>
+        </li>
+        <div class="d-sm-flex ms-sm-auto align-items-center">
+          @if(userLoggedIn) {
+          <li class="nav-item mx-2">
+            <a class="nav-link" (click)="logout()" routerLink="">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-outline-dark text-uppercase" routerLink="/account">{{ userData.username }}</a>
+          </li>
+          } @else {
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="/login">Log in</a>
+          </li>
+          }
+          <!-- <li class="nav-item"> -->
+          <!--   <a class="nav-link" routerLink="/signup">Sign Up</a> -->
+          <!-- </li> -->
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>

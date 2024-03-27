@@ -1,38 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { AuthService } from './services/auth.service';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnInit {
-  title = 'Helloworld App';
-
-  userLoggedIn: boolean = false;
-  userData: any = {}
-
-  constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit(): void {
-    this.authService.userLoggedIn$.subscribe( userStatus => this.userLoggedIn = userStatus );
-    this.authService.userLoginData$.subscribe( userData => this.userData = userData );
-    if (this.authService.getToken() != null) {
-      this.authService.verifyCurrentToken().subscribe(
-        () => {
-          this.authService.getUserLoginData();
-        }
-      )
-    }
-  }
-  
-  logout(): void {
-    this.authService.removeTokenAndUserData();
-    this.userLoggedIn = false;
-    this.userData = {};
-    this.router.navigateByUrl('/')
-  }
+export class AppComponent {
 
 }
