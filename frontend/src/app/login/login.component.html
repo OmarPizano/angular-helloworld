@@ -7,7 +7,21 @@
     <div class="d-flex flex-column col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto gap-4 p-3 shadow border border-secondary rounded" style="height: 50vh;">
       <div class="d-flex flex-column my-2 gap-3">
         <input class="form-control" type="text" formControlName="username" placeholder="Username" autofocus>
+        @if (username.invalid && (username.dirty || username.touched)) {
+        <div class="text-end text-danger fs-6 fw-light fst-italic">
+          @if (username.errors?.['required']) {
+          Username required.
+          }
+        </div>
+        }
         <input class="form-control" type="password" formControlName="password" placeholder="Password">
+        @if (password.invalid && (password.dirty || password.touched)) {
+        <div class="text-end text-danger fs-6 fw-light fst-italic">
+          @if (password.errors?.['required']) {
+          Password required.
+          }
+        </div>
+        }
       </div>
       <div class="d-flex flex-column my-3">
         <button class="btn btn-secondary" type="submit">Login</button>
