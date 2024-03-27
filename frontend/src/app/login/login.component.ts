@@ -12,6 +12,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 export class LoginComponent {
   title: string = 'Login';
 
+  invalidCredentials: boolean = false;
+
   loginForm = this.fb.group({
     username: ['', [
       Validators.required
@@ -34,8 +36,7 @@ export class LoginComponent {
           this.router.navigateByUrl('/');
         },
         error: (err) => {
-          // TODO: indicar que las credenciales no son válidas
-          console.log(err);
+          this.invalidCredentials = true;
         }
       });
     } else {
