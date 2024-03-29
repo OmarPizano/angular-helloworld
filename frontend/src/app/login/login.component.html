@@ -11,7 +11,7 @@
       </div>
       }
       <div class="d-flex flex-column my-2 gap-3">
-        <input class="form-control" type="text" formControlName="username" placeholder="Username" autofocus>
+        <input class="form-control" type="text" formControlName="username" placeholder="Username" appAutoFocus>
         @if (username.invalid && (username.dirty || username.touched)) {
         <div class="text-end text-danger fs-6 fw-light fst-italic">
           @if (username.errors?.['required']) {
