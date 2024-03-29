@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     this.authService.userLoggedIn$.subscribe(
       (loggedIn) => {
         if (loggedIn) {
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/dashboard');
         } else {
           if (this.submittedCredentials) {
             this.invalidCredentials = true;
