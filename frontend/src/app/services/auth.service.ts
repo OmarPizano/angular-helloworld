@@ -21,7 +21,7 @@ export class AuthService {
   authenticateUserCredentials(username: string, password: string): void {
     this.http.post<{ token: string }>(API_URL + '/auth', {username, password}).subscribe({
       next: (data) => {
-        sessionStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token);
         this.loadUserData();
       },
       error: () => {
@@ -43,11 +43,11 @@ export class AuthService {
   }
 
   getToken(): string|null {
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
 
   removeTokenAndUserData(): void {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
     this.resetUserData();
   }
 
