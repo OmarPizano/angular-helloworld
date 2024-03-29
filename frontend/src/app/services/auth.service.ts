@@ -13,45 +13,55 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   private userLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public userLoggedIn$: Observable<boolean> = this.userLoggedInSubject.asObservable();
+  userLoggedIn$: Observable<boolean> = this.userLoggedInSubject.asObservable();
 
   private userLoginDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public userLoginData$: Observable<any> = this.userLoginDataSubject.asObservable();
+  userLoginData$: Observable<any> = this.userLoginDataSubject.asObservable();
 
-  // login component
-  generateUserToken(username: string, password: string): Observable<any> {
-    return this.http.post(API_URL + '/auth', {username, password});
-  }
-
-  // componente principal
-  verifyCurrentToken(): Observable<any> {
-    return this.http.get(API_URL + '/auth/verify');
-  }
-
-  // al iniciar sesión y al recargar
-  getUserLoginData(): void {
-    this.http.get(API_URL + '/auth/data').subscribe(
-      (data) => {
-        this.userLoggedInSubject.next(true);
-        this.userLoginDataSubject.next(data);
+  authenticateUserCredentials(username: string, password: string): void {
+    this.http.post<{ token: string }>(API_URL + '/auth', {username, password}).subscribe({
+      next: (data) => {
+        sessionStorage.setItem('token', data.token);
+        this.loadUserData();
+      },
+      error: () => {
+        this.resetUserData();
       }
-    )
+    });
   }
 
-  // al iniciar sesión
-  saveToken(token: string): void {
-    sessionStorage.setItem('token', token);
+  verifyCurrentToken(): void {
+    this.http.get(API_URL + '/auth/verify').subscribe({
+      next: () => {
+        this.loadUserData();
+      },
+      error: () => {
+        // eliminar el token inválido y resetear estado
+        this.removeTokenAndUserData();
+      }
+    });
   }
 
-  // httpinterceptor
   getToken(): string|null {
     return sessionStorage.getItem('token');
   }
 
-  // logout
   removeTokenAndUserData(): void {
     sessionStorage.removeItem('token');
-    this.userLoginDataSubject.next({});
+    this.resetUserData();
+  }
+
+  private loadUserData(): void {
+    this.http.get(API_URL + '/auth/data').subscribe({
+      next: (data) => {
+        this.userLoggedInSubject.next(true);
+        this.userLoginDataSubject.next(data);
+      }
+    })
+  }
+
+  private resetUserData(): void {
     this.userLoggedInSubject.next(false);
+    this.userLoginDataSubject.next({});
   }
 }

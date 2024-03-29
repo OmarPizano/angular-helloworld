@@ -20,11 +20,7 @@ export class NavbarComponent implements OnInit {
     this.authService.userLoggedIn$.subscribe( userStatus => this.userLoggedIn = userStatus );
     this.authService.userLoginData$.subscribe( userData => this.userData = userData );
     if (this.authService.getToken() != null) {
-      this.authService.verifyCurrentToken().subscribe(
-        () => {
-          this.authService.getUserLoginData();
-        }
-      )
+      this.authService.verifyCurrentToken();
     }
   }
   
