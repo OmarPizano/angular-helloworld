@@ -1,1 +1,27 @@
-<p>dashboard works!</p>
+<h1>{{ title }}</h1>
+
+<hr>
+
+<div class="d-flex flex-row justify-content-between">
+  <p>Username: {{ userData.username }} (ID: {{ userData.id }})</p>
+  <p>Role: {{ userData.role }}</p>
+</div>
+
+<h2>Change password</h2>
+
+<form [formGroup]="changePasswordForm" (ngSubmit)="onSubmitChangePassword()">
+  <div class="input-group">
+    <input class="form-control" type="password" formControlName="password" placeholder="Type your new password">
+    <button class="btn btn-danger" type="submit">Change Password</button>
+  </div>
+  @if (password.invalid && (password.dirty || password.touched)) {
+  <div class="text-danger fs-6 fw-light fst-italic">
+    @if (password.errors?.['required']) {
+    Password required
+    }
+    @if (password.errors?.['minlength'] || password.errors?.['maxlength']) {
+    Password must be between 6 and 60 chars
+    }
+  </div>
+  }
+</form>
