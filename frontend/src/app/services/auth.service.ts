@@ -34,10 +34,6 @@ export class AuthService {
     this.http.get(API_URL + '/auth/verify').subscribe({
       next: () => {
         this.loadUserData();
-      },
-      error: () => {
-        // eliminar el token inválido y resetear estado
-        this.removeTokenAndUserData();
       }
     });
   }
