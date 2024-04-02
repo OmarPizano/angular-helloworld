@@ -101,3 +101,30 @@ upstream frontend {
     server LOCAL_IP:8081 backup;
 }
 ```
+
+Protección de API. Solo permitir accedo a API desde frontend. Algunas rutas de API permitidas desde cualquier origen.
+
+```
+server {
+    
+    # otra config
+    
+    # rutas del frontend permitidas desde cualquier origen
+    location / {
+        proxy_pass http://frontend;
+    }    
+    
+    # ruta de la API permitida desde cualquier origen
+    location /api {
+        proxy_pass http://backend;
+    }    
+    
+    # todo bajo /api/ solo permitido si viene desde el dominio indicado
+    location /api/ {
+        if ($http_origin != "http://domain.org") {
+            return 403;
+        }
+        proxy_pass http://backend;
+    }        
+}
+```
