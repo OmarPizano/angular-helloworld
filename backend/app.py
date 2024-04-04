@@ -199,7 +199,7 @@ def users_search(pattern):
 
 # NOMBRES
 @app.route(URL_PREFIX + '/names', methods = ['GET'])
-@jwt_required()
+# @jwt_required()
 def names_get_all():
     names = Name.query.all()
     results = [name.to_dict() for name in names]
