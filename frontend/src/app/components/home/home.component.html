@@ -2,4 +2,16 @@
 
 <hr>
 
-<p>home works!</p>
+<p>API: {{ apiVersion }}</p>
+
+<h2>Current Name List</h2>
+
+@if( nameList.length !== 0 ) {
+<ul>
+  @for(name of nameList; track name.id) {
+  <li>{{ name.name }}</li>
+  }
+</ul>
+} @else {
+<p>The name list is EMPTY!</p>
+}
