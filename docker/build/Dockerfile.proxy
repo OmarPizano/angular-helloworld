@@ -1,9 +1,10 @@
 FROM nginx:latest
 
 ENV SERVER_IP 127.0.0.1
+ENV FRONTEND_URL http://example.org
 
 COPY docker/build/nginx-proxy.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-CMD ["/bin/bash", "-c", "sed -i s#LOCAL_IP#$SERVER_IP#g /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD ["/bin/bash", "-c", "sed -i -e s#LOCAL_IP#$SERVER_IP#g -e s#FRONTEND_ORIGIN#$FRONTEND_URL#g /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
