@@ -70,6 +70,7 @@ docker run -d \
     -p 80:80 \
     --name reverse-proxy \
     --env="SERVER_IP=X.X.X.X"
+    --env="FRONTEND_URL=http://example.org"
     tomnoir/helloworld-reverse-proxy
 ```
 
