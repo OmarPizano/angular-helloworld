@@ -44,9 +44,15 @@
   }
 
   <div class="d-flex flex-row justify-content-start">
-  @if(updateNameFormEnabled) {
-    <app-update-name [name]="updatingName.name" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
-  }
+    @if(updateNameFormEnabled) {
+    <form (ngSubmit)="onSubmitUpdateName()">
+      <div class="input-group">
+        <input class="form-control" type="text" [(ngModel)]="updatingName.name" name="updatingName.name" placeholder="Type the new name">
+        <button class="btn btn-secondary" type="submit">Update</button>
+        <button class="btn btn-danger" (click)="cancelUpdate()">Cancel</button>
+      </div>
+    </form>
+    }
 
     @if(createNameFormEnabled) {
     <form (ngSubmit)="onSubmitName()">

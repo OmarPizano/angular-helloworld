@@ -1,8 +1,0 @@
-<h2>{{ title }}: {{ name }}</h2>
-<form (ngSubmit)="updateName()">
-  <div class="input-group">
-    <input class="form-control" type="text" [(ngModel)]="newName" name="newName" placeholder="Type the new name" appAutoFocus>
-    <button class="btn btn-secondary" type="submit">Update</button>
-    <button class="btn btn-danger" (click)="cancelUpdate()">Cancel</button>
-  </div>
-</form>

@@ -1,6 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { UpdateNameComponent } from './update-name/update-name.component';
 import { SearchNamesComponent } from './search-names/search-names.component';
 import { Name } from '../../models/name';
 import { NamesService } from '../../services/names.service';
@@ -10,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-name-list',
   standalone: true,
-  imports: [NgFor, NgIf, UpdateNameComponent, SearchNamesComponent, RouterLink, FormsModule],
+  imports: [NgFor, NgIf, SearchNamesComponent, RouterLink, FormsModule],
   templateUrl: './name-list.component.html',
 })
 export class NameListComponent implements OnInit {
@@ -50,12 +49,12 @@ export class NameListComponent implements OnInit {
     );
   }
 
-  updateName(name: string): void {
-    this.namesService.updateName(this.updatingName.id, name).subscribe(
+  onSubmitUpdateName(): void {
+    this.namesService.updateName(this.updatingName.id, this.updatingName.name).subscribe(
       (updatedName) => {
         const index = this.nameList.findIndex(item => item.id === this.updatingName.id);
         if (index !== -1) {
-          this.nameList[index].name = name;
+          this.nameList[index].name = this.updatingName.name;
         }
       }
     )
@@ -69,7 +68,8 @@ export class NameListComponent implements OnInit {
   showUpdateForm(name: Name): void {
     this.updateNameFormEnabled = true;
     this.createNameFormEnabled = false;
-    this.updatingName = name;
+    // pasar valor en lugar de referencia para evitar alterar la lista desde el form
+    this.updatingName = {id: name.id, name: name.name};
   }
 
   cancelUpdate(): void {
