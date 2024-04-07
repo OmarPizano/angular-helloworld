@@ -1,6 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { SearchNamesComponent } from './search-names/search-names.component';
+import { Component, OnInit } from '@angular/core';
 import { Name } from '../../models/name';
 import { NamesService } from '../../services/names.service';
 import { RouterLink } from '@angular/router';
@@ -9,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-name-list',
   standalone: true,
-  imports: [NgFor, NgIf, SearchNamesComponent, RouterLink, FormsModule],
+  imports: [NgFor, NgIf, RouterLink, FormsModule],
   templateUrl: './name-list.component.html',
 })
 export class NameListComponent implements OnInit {
@@ -17,8 +16,10 @@ export class NameListComponent implements OnInit {
   nameList: Name[] = [];
   createNameFormEnabled: boolean = false;
   updateNameFormEnabled: boolean = false;
+  searchButtonPressed: boolean = false;
   updatingName: Name = {id: 0, name: ''};
   creatingName: string = '';
+  searchPattern: string = '';
 
   constructor(private namesService: NamesService) { }
 
@@ -61,8 +62,9 @@ export class NameListComponent implements OnInit {
     this.updateNameFormEnabled = false;
   }
 
-  searchNames(pattern: string): void {
-    this.namesService.searchNameByName(pattern).subscribe(names => this.nameList = names);
+  onSubmitSearch(): void {
+    this.namesService.searchNameByName(this.searchPattern).subscribe(names => this.nameList = names);
+    this.searchButtonPressed = true;
   }
 
   showUpdateForm(name: Name): void {
@@ -88,6 +90,8 @@ export class NameListComponent implements OnInit {
   }
 
   resetList(): void {
+    this.searchPattern = '';
+    this.searchButtonPressed = false;
     this.getNameList();
   }
 }

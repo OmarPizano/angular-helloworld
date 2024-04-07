@@ -1,9 +1,0 @@
-<form (ngSubmit)="searchNames()">
-  <div class="input-group">
-    @if(searchButtonPressed) {
-    <button class="btn btn-warning" type="reset" (click)="reset()">Reset</button>
-    }
-    <input class="form-control" type="text" [(ngModel)]="pattern" name="pattern" placeholder="Filter by name" appAutoFocus>
-    <button class="btn btn-secondary" type="submit">Search</button>
-  </div>
-</form>

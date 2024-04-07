@@ -6,7 +6,15 @@
 
   <div class="d-flex flex-row justify-content-between">
     <button class="btn btn-secondary" (click)="showCreateForm()">Create</button>
-    <app-search-names (searchButton)="searchNames($event)" (resetButton)="resetList()"/>
+    <form (ngSubmit)="onSubmitSearch()">
+      <div class="input-group">
+        @if(searchButtonPressed) {
+        <button class="btn btn-warning" type="reset" (click)="resetList()">Reset</button>
+        }
+        <input class="form-control" type="text" [(ngModel)]="searchPattern" name="searchPattern" placeholder="Filter by name" appAutoFocus>
+        <button class="btn btn-secondary" type="submit">Search</button>
+      </div>
+    </form>
   </div>
 
   @if(nameList.length > 0) {
