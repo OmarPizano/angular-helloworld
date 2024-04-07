@@ -48,9 +48,15 @@
     <app-update-name [name]="updatingName.name" (updateButton)="updateName($event)" (cancelButton)="cancelUpdate()" />
   }
 
-  @if(createNameFormEnabled) {
-    <app-create-name (createButton)="createName($event)" (cancelButton)="cancelCreate()" />
-  }
+    @if(createNameFormEnabled) {
+    <form (ngSubmit)="onSubmitName()">
+      <div class="input-group">
+        <input class="form-control" type="text" [(ngModel)]="creatingName" name="creatingName" placeholder="Type your name">
+        <button class="btn btn-secondary" type="submit">Create</button>
+        <button class="btn btn-danger" (click)="cancelCreate()">Cancel</button>
+      </div>
+    </form>
+    }
   </div>
 
   <div class="d-flex flex-row justify-content-start">

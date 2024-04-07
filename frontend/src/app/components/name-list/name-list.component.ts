@@ -1,16 +1,16 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { CreateNameComponent } from './create-name/create-name.component';
 import { UpdateNameComponent } from './update-name/update-name.component';
 import { SearchNamesComponent } from './search-names/search-names.component';
 import { Name } from '../../models/name';
 import { NamesService } from '../../services/names.service';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-name-list',
   standalone: true,
-  imports: [NgFor, NgIf, UpdateNameComponent, CreateNameComponent, SearchNamesComponent, RouterLink],
+  imports: [NgFor, NgIf, UpdateNameComponent, SearchNamesComponent, RouterLink, FormsModule],
   templateUrl: './name-list.component.html',
 })
 export class NameListComponent implements OnInit {
@@ -19,6 +19,7 @@ export class NameListComponent implements OnInit {
   createNameFormEnabled: boolean = false;
   updateNameFormEnabled: boolean = false;
   updatingName: Name = {id: 0, name: ''};
+  creatingName: string = '';
 
   constructor(private namesService: NamesService) { }
 
@@ -30,11 +31,12 @@ export class NameListComponent implements OnInit {
     this.namesService.getNames().subscribe(names => this.nameList = names);
   }
 
-  createName(name: string): void {
-    this.namesService.createName(name).subscribe(
+  onSubmitName(): void {
+    this.namesService.createName(this.creatingName).subscribe(
       (createdName) => this.nameList.push(createdName)
     );
     this.createNameFormEnabled = false;
+    this.creatingName = '';
   }
 
   deleteName(id: number): void {
@@ -82,6 +84,7 @@ export class NameListComponent implements OnInit {
 
   cancelCreate(): void {
     this.createNameFormEnabled = false;
+    this.creatingName = '';
   }
 
   resetList(): void {
