@@ -17,6 +17,30 @@
     </form>
   </div>
 
+  @if(updateNameFormEnabled || createNameFormEnabled) {
+  <div class="d-flex flex-column">
+    @if(updateNameFormEnabled) {
+    <form (ngSubmit)="onSubmitUpdateName()">
+      <div class="input-group">
+        <input class="form-control" type="text" [(ngModel)]="updatingName.name" name="updatingName.name" placeholder="Type the new name">
+        <button class="btn btn-secondary" type="submit">Update</button>
+        <button class="btn btn-danger" (click)="cancelUpdate()">Cancel</button>
+      </div>
+    </form>
+    }
+    @if(createNameFormEnabled) {
+    <form (ngSubmit)="onSubmitName()">
+      <div class="input-group">
+        <input class="form-control" type="text" [(ngModel)]="creatingName" name="creatingName" placeholder="Type the new name">
+        <button class="btn btn-secondary" type="submit">Create</button>
+        <button class="btn btn-danger" (click)="cancelCreate()">Cancel</button>
+      </div>
+    </form>
+    }
+  </div>
+  }
+
+
   @if(nameList.length > 0) {
 
   <table class="table table-sm table-dark table-bordered table-hover table-striped align-middle">
@@ -50,28 +74,6 @@
   </div>
 
   }
-
-  <div class="d-flex flex-row justify-content-start">
-    @if(updateNameFormEnabled) {
-    <form (ngSubmit)="onSubmitUpdateName()">
-      <div class="input-group">
-        <input class="form-control" type="text" [(ngModel)]="updatingName.name" name="updatingName.name" placeholder="Type the new name">
-        <button class="btn btn-secondary" type="submit">Update</button>
-        <button class="btn btn-danger" (click)="cancelUpdate()">Cancel</button>
-      </div>
-    </form>
-    }
-
-    @if(createNameFormEnabled) {
-    <form (ngSubmit)="onSubmitName()">
-      <div class="input-group">
-        <input class="form-control" type="text" [(ngModel)]="creatingName" name="creatingName" placeholder="Type your name">
-        <button class="btn btn-secondary" type="submit">Create</button>
-        <button class="btn btn-danger" (click)="cancelCreate()">Cancel</button>
-      </div>
-    </form>
-    }
-  </div>
 
   <div class="d-flex flex-row justify-content-start">
     <a class="btn btn-secondary" routerLink="../">Back to Home</a>
