@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AutofocusDirective } from '../directives/auto-focus.directive';
+import { AutofocusDirective } from '../../directives/auto-focus.directive';
 
 @Component({
   selector: 'app-login',
