@@ -37,7 +37,8 @@ export class AuthService {
       },
       error: (err) => {
         // sólo borrar el token cuando es inválido
-        if (err.status === 422) {
+        // TODO: reparar este fix temporal para cuando caduca el token
+        if (err.status === 422 || err.status === 401) {
           this.removeTokenAndUserData();
         }
       }
